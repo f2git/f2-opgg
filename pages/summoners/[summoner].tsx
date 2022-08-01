@@ -1,6 +1,8 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
 import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
+import { useAppSelector, wrapper } from '../../store';
+import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
 
 const SummonerPageContainer = styled.div`
@@ -39,6 +41,8 @@ const SummonerPageContainer = styled.div`
 `;
 
 const SummonerPage = ({ name }: { name: string }) => {
+  // const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
+
   return (
     <SummonerPageContainer>
       <div className="summoner-profile-area">
@@ -65,17 +69,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = wrapper.getStaticProps((store) => async ({ params }) => {
   const name = params!.summoner;
-  const res = await getSummonerBaseInfo(name as string);
-  console.log(res);
+  await store.dispatch(fetchSummonerBaseInfoByName(name as string));
 
   return {
     props: {
       name,
     },
-    revalidate: 20,
+    revalidate: 10,
   };
-};
+});
 
 export default SummonerPage;
