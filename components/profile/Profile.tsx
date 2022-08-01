@@ -2,7 +2,12 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../store';
 import TierBadge from './TierBadge';
 
-const ProfileContainer = styled.div`
+interface IProps {
+  profileUrl: string;
+  borderUrl: string;
+}
+
+const ProfileContainer = styled.div<IProps>`
   .tier-badges-area {
     height: 30px;
     display: flex;
@@ -11,18 +16,41 @@ const ProfileContainer = styled.div`
       margin-left: 7px;
     }
   }
+  .profile-image-name-area {
+    margin-top: 20px;
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      background-size: contain;
+      background-image: url(${(props) => props.profileUrl});
+    }
+    .border-image {
+      position: relative;
+      top: -10px;
+      left: -10px;
+      width: 120px;
+      height: 120px;
+      background-size: contain;
+      background-image: url(${(props) => props.borderUrl});
+    }
+  }
 `;
 
 const Profile = () => {
-  const prevTiers = useAppSelector(({ summonerReducer }) => summonerReducer.selected)!.previousTiers;
+  const selected = useAppSelector(({ summonerReducer }) => summonerReducer.selected)!;
+  const { previousTiers } = selected;
   return (
-    <ProfileContainer>
+    <ProfileContainer profileUrl={selected.profileImageUrl} borderUrl={selected.profileBorderImageUrl}>
       <div className="tier-badges-area">
-        {prevTiers.map((tier) => (
+        {previousTiers.map((tier) => (
           <TierBadge key={tier.season} {...tier} />
         ))}
       </div>
-      <div>2</div>
+      <div className="profile-image-name-area">
+        <div className="profile-image">
+          <div className="border-image" />
+        </div>
+      </div>
     </ProfileContainer>
   );
 };
