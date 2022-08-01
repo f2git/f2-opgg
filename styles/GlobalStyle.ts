@@ -1,5 +1,6 @@
 import { createGlobalStyle, css } from 'styled-components';
 import reset from 'styled-reset';
+import Colors from './Colors';
 
 const globalStyle = css`
   ${reset};
@@ -7,7 +8,7 @@ const globalStyle = css`
     box-sizing: border-box;
   }
   body {
-    background-color: white;
+    background-color: ${Colors.background};
   }
   #__next {
     min-height: 100vh;
