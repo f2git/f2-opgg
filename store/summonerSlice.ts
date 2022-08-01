@@ -14,7 +14,7 @@ export const fetchSummonerBaseInfoByName = createAsyncThunk(
   'summoners/fetchBaseInfoByName',
   async (name: string, { rejectWithValue }) => {
     const res = await getSummonerBaseInfo(name);
-    return res.data;
+    return res.data.summoner;
   },
 );
 
