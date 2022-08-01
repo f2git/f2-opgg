@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
 import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
+import Profile from '../../components/profile/Profile';
 import { useAppSelector, wrapper } from '../../store';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
@@ -46,7 +47,9 @@ const SummonerPage = ({ name }: { name: string }) => {
   return (
     <SummonerPageContainer>
       <div className="summoner-profile-area">
-        <div className="contents-area">{name}</div>
+        <div className="contents-area">
+          <Profile />
+        </div>
       </div>
       <div className="summoner-details-area contents-area">
         <div className="details-left-area">
