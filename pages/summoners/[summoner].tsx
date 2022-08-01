@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
 import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
+import Profile from '../../components/profile/Profile';
 import { useAppSelector, wrapper } from '../../store';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
@@ -8,7 +9,6 @@ import Constants from '../../styles/Constants';
 const SummonerPageContainer = styled.div`
   .summoner-profile-area {
     height: 175px;
-    background-color: orange;
     border-bottom: 1px solid #d8d8d8;
   }
   .summoner-details-area {
@@ -41,24 +41,28 @@ const SummonerPageContainer = styled.div`
 `;
 
 const SummonerPage = ({ name }: { name: string }) => {
-  // const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
+  const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
 
   return (
-    <SummonerPageContainer>
-      <div className="summoner-profile-area">
-        <div className="contents-area">{name}</div>
-      </div>
-      <div className="summoner-details-area contents-area">
-        <div className="details-left-area">
-          <div className="test-card">1</div>
-          <div className="test-card">2</div>
-          <div className="test-card">2</div>
+    selectedSummoner && (
+      <SummonerPageContainer>
+        <div className="summoner-profile-area">
+          <div className="contents-area">
+            <Profile />
+          </div>
         </div>
-        <div className="details-main-area">
-          <div className="test-card">4</div>
+        <div className="summoner-details-area contents-area">
+          <div className="details-left-area">
+            <div className="test-card">1</div>
+            <div className="test-card">2</div>
+            <div className="test-card">2</div>
+          </div>
+          <div className="details-main-area">
+            <div className="test-card">4</div>
+          </div>
         </div>
-      </div>
-    </SummonerPageContainer>
+      </SummonerPageContainer>
+    )
   );
 };
 
