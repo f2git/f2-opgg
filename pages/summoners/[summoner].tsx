@@ -1,6 +1,5 @@
-import { NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
-
 import Constants from '../../styles/Constants';
 
 const SummonerPageContainer = styled.div`
@@ -38,11 +37,11 @@ const SummonerPageContainer = styled.div`
   }
 `;
 
-const SummonerPage: NextPage = () => {
+const SummonerPage = ({ name }: { name: string }) => {
   return (
     <SummonerPageContainer>
       <div className="summoner-profile-area">
-        <div className="contents-area">1</div>
+        <div className="contents-area">{name}</div>
       </div>
       <div className="summoner-details-area contents-area">
         <div className="details-left-area">
@@ -56,6 +55,24 @@ const SummonerPage: NextPage = () => {
       </div>
     </SummonerPageContainer>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [{ params: { summoner: '플레이어아이디' } }],
+    fallback: true, // false면 위 이외는 전부 404
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const name = params?.summoner;
+
+  return {
+    props: {
+      name,
+    },
+    revalidate: 20,
+  };
 };
 
 export default SummonerPage;
