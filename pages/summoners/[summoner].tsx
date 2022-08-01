@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
+import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
 import Constants from '../../styles/Constants';
 
 const SummonerPageContainer = styled.div`
@@ -65,7 +66,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const name = params?.summoner;
+  const name = params!.summoner;
+  const res = await getSummonerBaseInfo(name as string);
+  console.log(res);
 
   return {
     props: {
