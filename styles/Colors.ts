@@ -6,4 +6,5 @@ export default {
   widgetBorder: '#cdd2d2',
   normalGray: '#879292',
   almostBlack: '#555e5e',
+  almostBlackPlusFewRed: '#5e5e5e',
 };
