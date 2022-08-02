@@ -7,8 +7,10 @@ const WidgetBoxStyle = css`
   border-radius: 2px;
 `;
 
-const TestStyle = css`
-  background-color: red;
+const FlexHoriVertiCenterStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-export { WidgetBoxStyle, TestStyle };
+export { WidgetBoxStyle, FlexHoriVertiCenterStyle };
