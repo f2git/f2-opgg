@@ -81,7 +81,7 @@ const RankCard = ({ mode }: IProps) => {
     <RankCardContainer {...variableStyle}>
       <div className="tier-image-area">
         <div className="tier-image">
-          <Image src={imageUrl} objectFit="contain" layout="fill" />
+          <Image src={imageUrl} objectFit="contain" layout="fill" priority />
         </div>
       </div>
       <div className="description">
