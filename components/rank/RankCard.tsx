@@ -4,11 +4,27 @@ import { useAppSelector } from '../../store';
 import { WidgetBoxStyle } from '../../styles/GeneralStyle';
 import Colors from '../../styles/Colors';
 
-const RankCardContainer = styled.div`
+interface IStyleProps {
+  cardHeight: string;
+  imageSize: string;
+}
+
+const RankCardContainer = styled.div<IStyleProps>`
   ${WidgetBoxStyle}
-  height: 124px;
+  height: ${({ cardHeight }) => cardHeight};
   display: flex;
   padding: 10px;
+  .tier-image-area {
+    width: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > .tier-image {
+      height: ${({ imageSize }) => imageSize};
+      width: ${({ imageSize }) => imageSize};
+      position: relative;
+    }
+  }
   .description {
     display: flex;
     flex-direction: column;
@@ -41,29 +57,55 @@ const RankCardContainer = styled.div`
     .win-rate {
       color: ${Colors.normalGray};
     }
+    .unranked {
+      font-size: 13px;
+      color: ${Colors.normalGray};
+      font-weight: bold;
+    }
   }
 `;
 
-const RankCard = () => {
+interface IProps {
+  mode: 'solo' | 'free';
+}
+
+const RankCard = ({ mode }: IProps) => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected)!;
-  const { hasResults, losses, wins, tierRank } = selectedSummoner.leagues[0];
+  const { hasResults, losses, wins, tierRank } = selectedSummoner.leagues[mode === 'solo' ? 0 : 1];
   const getFullTierRankName = (name: string) => (name === '솔랭' ? '솔로 랭크' : name);
+  const variableStyle =
+    mode === 'solo' ? { cardHeight: '120px', imageSize: '104px' } : { cardHeight: '98px', imageSize: '64px' };
+  const imageUrl = hasResults ? tierRank.imageUrl : '/images/unranked.png';
+
   return (
-    <RankCardContainer>
-      <Image src={tierRank.imageUrl} width="104px" height="104px" />
+    <RankCardContainer {...variableStyle}>
+      <div className="tier-image-area">
+        <div className="tier-image">
+          <Image src={imageUrl} objectFit="contain" layout="fill" />
+        </div>
+      </div>
       <div className="description">
         <div className="rank-name">{getFullTierRankName(tierRank.name)}</div>
-        <div className="position">
-          <span>탑</span> (총 {wins + losses}게임)
-        </div>
-        <div className="tier">{tierRank.tierDivision}</div>
-        <div className="win-lose">
-          <span className="lp">{tierRank.lp} LP </span> /
-          <span>
-            {wins}승 {losses}패
-          </span>
-        </div>
-        <div className="win-rate">승률 {Math.floor((wins / (wins + losses)) * 100)} %</div>
+        {hasResults ? (
+          <>
+            {mode === 'solo' && (
+              <div className="position">
+                <span>탑</span> (총 {wins + losses}게임)
+              </div>
+            )}
+            <div className="tier">{tierRank.tierDivision}</div>
+            <div className="win-lose">
+              <span className="lp">{tierRank.lp} LP </span> /
+              <span>
+                {wins}승 {losses}패
+              </span>
+            </div>
+
+            <div className="win-rate">승률 {Math.floor((wins / (wins + losses)) * 100)} %</div>
+          </>
+        ) : (
+          <div className="unranked">Unranked</div>
+        )}
       </div>
     </RankCardContainer>
   );

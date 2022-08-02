@@ -55,8 +55,8 @@ const SummonerPage = ({ name }: { name: string }) => {
         </div>
         <div className="summoner-details-area contents-area">
           <div className="details-left-area">
-            <RankCard />
-            <RankCard />
+            <RankCard mode="solo" />
+            <RankCard mode="free" />
             <div className="test-card">2</div>
           </div>
           <div className="details-main-area">
