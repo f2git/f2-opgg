@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
 import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
+import MostChamp from '../../components/most/MostChamp';
 import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
 
@@ -57,7 +58,7 @@ const SummonerPage = ({ name }: { name: string }) => {
           <div className="details-left-area">
             <RankCard mode="solo" />
             <RankCard mode="free" />
-            <div className="test-card">2</div>
+            <MostChamp />
           </div>
           <div className="details-main-area">
             <div className="test-card">4</div>
