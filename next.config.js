@@ -11,6 +11,10 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ['opgg-static.akamaized.net'],
+    formats: ['image/avif', 'image/webp'],
+  },
 };
 
 module.exports = nextConfig;
