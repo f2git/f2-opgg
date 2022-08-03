@@ -5,6 +5,8 @@ import noChampAvatar from '../../public/images/noChampAvatar.svg';
 import { default as GS } from '../../styles/GeneralStyle';
 
 import ChampAvatar from '../common/ChampAvatar';
+import { useAppSelector } from '../../store';
+import KDA from '../common/numbers/KDA';
 
 const MatcheSummaryContainer = styled.div`
   height: 158px;
@@ -101,17 +103,29 @@ const MatcheSummaryContainer = styled.div`
 `;
 
 const MatchesSummary = () => {
+  const { matchesInfo } = useAppSelector(({ matchesReducer }) => matchesReducer);
+  const { summary } = matchesInfo!;
+  const { assists, deaths, kills, losses, wins } = summary;
+  const games = wins + losses;
+
   return (
     <MatcheSummaryContainer>
       <div className="chart-container">
         <div className="pie-chart-area">
-          <div className="description">20전 9승 11패</div>
+          <div className="description">
+            {games}전 {wins}승 {losses}패
+          </div>
           <div className="chart">2</div>
         </div>
         <div className="detail">
-          <div className="avg">5.8 / 4.6 / 8.0</div>
+          <div className="avg">
+            <KDA k={kills} d={deaths} a={assists} mode="Each" games={games} colored />
+          </div>
           <div className="kda">
-            <span className="point">3.1</span> (50%)
+            <span className="point">
+              <KDA k={kills} d={deaths} a={assists} colored />
+            </span>
+            {' (50%)'}
           </div>
         </div>
       </div>

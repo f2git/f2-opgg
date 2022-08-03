@@ -7,6 +7,7 @@ import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
 
 import { useAppSelector, wrapper } from '../../store';
+import { fetchMatchesInfoByName } from '../../store/matchesSlice';
 import { fetchMostInfoByName } from '../../store/mostSlice';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
@@ -82,8 +83,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = wrapper.getStaticProps((store) => async ({ params }) => {
   const name = params!.summoner;
+
   await store.dispatch(fetchSummonerBaseInfoByName(name as string));
   await store.dispatch(fetchMostInfoByName());
+  await store.dispatch(fetchMatchesInfoByName());
 
   return {
     props: {
