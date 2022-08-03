@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { WidgetBoxStyle, FlexHoriVertiCenterStyle } from '../../styles/GeneralStyle';
+import { WidgetBoxStyle, FlexHorizontalVertiCalenterStyle } from '../../styles/GeneralStyle';
 import { selectMatchOption } from '../../store/matchesSlice';
 import { MatchOptionType } from '../../types/matches';
 
@@ -19,7 +19,7 @@ const MatchesTabContainer = styled.div<IProps>`
   font-weight: bold;
   color: ${Colors.moreAlmostBlack};
   .Tab {
-    ${FlexHoriVertiCenterStyle}
+    ${FlexHorizontalVertiCalenterStyle}
     height: 100%;
     margin-left: 16px;
     margin-right: 16px;

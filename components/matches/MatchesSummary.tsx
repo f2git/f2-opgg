@@ -1,48 +1,102 @@
+import Image from 'next/image';
 import styled from 'styled-components';
+import Colors from '../../styles/Colors';
+import noChampAvatar from '../../public/images/noChampAvatar.svg';
+import { default as GS } from '../../styles/GeneralStyle';
+
+import ChampAvatar from '../common/ChampAvatar';
 
 const MatcheSummaryContainer = styled.div`
-  height: 150px;
-  background-color: #ededed;
+  height: 158px;
+  background-color: ${Colors.widgetBackground};
   border: 1px solid #ccc;
   display: flex;
-  > div {
-    display: flex;
-    align-items: center;
-  }
   > div + div {
     border-left: 1px solid #ccc;
   }
   .chart-container {
-    width: 280px;
-    .pie-chart {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    ${GS.FlexRowVerticalCenter}
+    flex: 1;
 
+    .pie-chart-area {
+      ${GS.FlexColumnHorizontalCenter}
+      width: 138px;
+      justify-content: space-around;
+      height: 100%;
+      padding: 12px;
+
+      .description {
+        font-size: 12px;
+        color: ${Colors.darkGray};
+      }
       .chart {
+        ${GS.FlexHorizontalVertiCalenterStyle};
         width: 100px;
         height: 100px;
-        display: flex;
-        background-color: blue;
-        justify-content: center;
-        align-items: center;
-      }
-      .description {
+        border: 1px solid #ccc;
       }
     }
     .detail {
-      display: flex;
-      flex-direction: column;
+      ${GS.FlexColumnHorizontalCenter}
       flex: 1;
-      align-items: center;
+      .avg {
+        font-size: 11px;
+        font-weight: bold;
+      }
+      .kda {
+        margin-top: 6px;
+        font-size: 16px;
+        .point {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .champ-container, //champ-container와 position-container의 구조가 비슷하므로 스타일 공유
+  .position-container {
+    .list-item {
+      ${GS.FlexRowVerticalCenter}
+      flex: 1;
+      width: 100%;
+
+      .image-area {
+        padding-left: 16px;
+        padding-right: 8px;
+      }
+      .description-area {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .details {
+          font-size: 11px;
+          padding-top: 5px;
+        }
+      }
     }
   }
   .champ-container {
-    width: 230px;
+    ${GS.FlexColumn}
+    width: 228px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   .position-container {
-    flex: 1;
+    ${GS.FlexColumn}
+    width: 184px;
+
+    .title {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 10px;
+      height: 30px;
+      font-size: 12px;
+      color: ${Colors.darkGray};
+    }
   }
 `;
 
@@ -50,17 +104,67 @@ const MatchesSummary = () => {
   return (
     <MatcheSummaryContainer>
       <div className="chart-container">
-        <div className="pie-chart">
+        <div className="pie-chart-area">
           <div className="description">20전 9승 11패</div>
           <div className="chart">2</div>
         </div>
         <div className="detail">
-          <div>5.8/4.6/8.0</div>
-          <div>3.1(50%)</div>
+          <div className="avg">5.8 / 4.6 / 8.0</div>
+          <div className="kda">
+            <span className="point">3.1</span> (50%)
+          </div>
         </div>
       </div>
-      <div className="champ-container">2</div>
-      <div className="position-container">3</div>
+      <div className="champ-container">
+        <div className="list-item">
+          <div className="image-area">
+            <Image src={noChampAvatar} width={34} height={34} />
+          </div>
+          <div className="description-area">
+            <div className="name">룰루</div>
+            <div className="details">70% (7승 3패) 13.01 평점</div>
+          </div>
+        </div>
+        <div className="list-item">
+          <div className="image-area">
+            <Image src={noChampAvatar} width={34} height={34} />
+          </div>
+          <div className="description-area">
+            <div className="name">룰루</div>
+            <div className="details">70% (7승 3패) 13.01 평점</div>
+          </div>
+        </div>
+        <div className="list-item">
+          <div className="image-area">
+            <Image src={noChampAvatar} width={34} height={34} />
+          </div>
+          <div className="description-area">
+            <div className="name">룰루</div>
+            <div className="details">70% (7승 3패) 13.01 평점</div>
+          </div>
+        </div>
+      </div>
+      <div className="position-container">
+        <div className="title">선호 포지션 (랭크)</div>
+        <div className="list-item">
+          <div className="image-area">
+            <Image src={noChampAvatar} width={34} height={34} />
+          </div>
+          <div className="description-area">
+            <div className="name">탑</div>
+            <div className="details">70% | 13.01 평점</div>
+          </div>
+        </div>
+        <div className="list-item">
+          <div className="image-area">
+            <Image src={noChampAvatar} width={34} height={34} />
+          </div>
+          <div className="description-area">
+            <div className="name">탑</div>
+            <div className="details">70% | 13.01 평점</div>
+          </div>
+        </div>
+      </div>
     </MatcheSummaryContainer>
   );
 };
