@@ -14,6 +14,11 @@ const ChampAvatarContainer = styled.div<{ size: string }>`
   overflow: hidden;
   cursor: pointer;
   position: relative;
+  a > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const ChampAvatar = ({ champName, imageUrl, size }: IProps) => {
@@ -23,7 +28,9 @@ const ChampAvatar = ({ champName, imageUrl, size }: IProps) => {
   return (
     <ChampAvatarContainer size={size}>
       <a target="blank" href={avatarLink}>
-        <Image src={imageUrlHTTPS} layout="fill" objectFit="contain" />
+        <div>
+          <Image src={imageUrlHTTPS} layout="fill" objectFit="contain" />
+        </div>
       </a>
     </ChampAvatarContainer>
   );
