@@ -1,5 +1,7 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
+import MatchesSummary from '../../components/matches/MatchesSummary';
+import MatchesTap from '../../components/matches/MatchesTab';
 import MostChampTab from '../../components/most/MostChampTab';
 import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
@@ -61,7 +63,9 @@ const SummonerPage = ({ name }: { name: string }) => {
             <MostChampTab />
           </div>
           <div className="details-main-area">
-            <div className="test-card">4</div>
+            <MatchesTap />
+            <MatchesSummary />
+            <div className="test-card" />
           </div>
         </div>
       </SummonerPageContainer>
