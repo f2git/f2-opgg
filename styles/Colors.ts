@@ -5,6 +5,7 @@ const Pallet = {
   widget: '#f2f2f2',
   widgetBorder: '#cdd2d2',
   normalGray: '#879292',
+  moreAlmostBlack: '#555555',
   almostBlack: '#555e5e',
   almostBlackPlusFewRed: '#5e5e5e',
   darkRed: '#c6443e',
