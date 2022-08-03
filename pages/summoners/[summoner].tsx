@@ -1,10 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
-import { getSummonerBaseInfo, getSummonerMatcheInfo, getSummonerMostInfo } from '../../api/summonerAPI';
+import MostChampTab from '../../components/most/MostChampTab';
 import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
 
 import { useAppSelector, wrapper } from '../../store';
+import { fetchMostInfoByName } from '../../store/mostSlice';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
 
@@ -57,7 +58,7 @@ const SummonerPage = ({ name }: { name: string }) => {
           <div className="details-left-area">
             <RankCard mode="solo" />
             <RankCard mode="free" />
-            <div className="test-card">2</div>
+            <MostChampTab />
           </div>
           <div className="details-main-area">
             <div className="test-card">4</div>
@@ -78,6 +79,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = wrapper.getStaticProps((store) => async ({ params }) => {
   const name = params!.summoner;
   await store.dispatch(fetchSummonerBaseInfoByName(name as string));
+  await store.dispatch(fetchMostInfoByName());
 
   return {
     props: {

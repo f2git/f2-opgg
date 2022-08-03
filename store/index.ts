@@ -3,9 +3,11 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 
 import summonerReducer from './summonerSlice';
+import mostReducer from './mostSlice';
 
 const rootReducer = combineReducers({
   summonerReducer,
+  mostReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
