@@ -1,6 +1,8 @@
 const Pallet = {
   header: '#1ea1f7',
-  mainBlue: '#1f8ecd',
+  blue: '#1f8ecd',
+  red: '#ee5a52',
+  darkRed: '#c6443e',
   background: '#eaeaea',
   widgetBackground: '#ededed',
   widget: '#f2f2f2',
@@ -11,7 +13,6 @@ const Pallet = {
   moreAlmostBlack: '#555555',
   almostBlack: '#555e5e',
   almostBlackPlusFewRed: '#5e5e5e',
-  darkRed: '#c6443e',
   kda3: '#2daf7f',
   kda4: '#1f8ecd',
   kda5: '#e19205',
