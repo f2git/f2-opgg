@@ -8,7 +8,6 @@ import ChampAvatar from '../common/ChampAvatar';
 import { useAppSelector } from '../../store';
 import KDA from '../common/numbers/KDA';
 import WinRate from '../common/numbers/WinRate';
-import { Game } from '../../types/matches';
 
 const MatcheSummaryContainer = styled.div`
   height: 158px;
@@ -80,10 +79,29 @@ const MatcheSummaryContainer = styled.div`
         .name {
           font-size: 14px;
           font-weight: bold;
+          margin-bottom: 5px;
         }
         .details {
           font-size: 11px;
-          padding-top: 5px;
+          .win-rate {
+            font-weight: bold;
+          }
+          .spacer {
+            color: ${Colors.widgetBorder};
+          }
+          .point {
+            font-weight: bold;
+          }
+          .pick-rate {
+            font-size: 11px;
+            font-weight: bold;
+            color: ${Colors.mainBlue};
+          }
+        }
+
+        .no-champion {
+          font-size: 11px;
+          color: ${Colors.lightGray};
         }
       }
     }
@@ -111,7 +129,7 @@ const MatcheSummaryContainer = styled.div`
 
 const MatchesSummary = () => {
   const { matchesInfo } = useAppSelector(({ matchesReducer }) => matchesReducer);
-  const { summary, games } = matchesInfo!;
+  const { summary, champions, games, positions } = matchesInfo!;
   const { assists, deaths, kills, losses, wins } = summary;
   const gameCount = wins + losses;
 
@@ -120,78 +138,91 @@ const MatchesSummary = () => {
     gameCount;
   // summary에 전체 킬관여율이 없어서 부득이하게 games에 문자열로 들어있는 contributionForKillRate들을 파싱해서 계산했습니다.
 
+  const positionDic: { [char: string]: string } = { ADC: '바텀', SUP: '서포터', TOP: '탑', JNG: '정글', MID: '미드' };
+
   return (
-    <MatcheSummaryContainer>
-      <div className="chart-container">
-        <div className="pie-chart-area">
-          <div className="description">
-            {gameCount}전 {wins}승 {losses}패
+    matchesInfo && (
+      <MatcheSummaryContainer>
+        <div className="chart-container">
+          <div className="pie-chart-area">
+            <div className="description">
+              {gameCount}전 {wins}승 {losses}패
+            </div>
+            <div className="chart">2</div>
           </div>
-          <div className="chart">2</div>
-        </div>
-        <div className="detail">
-          <div className="avg">
-            <KDA k={kills} d={deaths} a={assists} mode="Each" games={gameCount} colored />
-          </div>
-          <div className="kda">
-            <span className="point">
-              <KDA k={kills} d={deaths} a={assists} extraText=":1" colored />
-            </span>
-            <span className="kill-engagement-rate"> ({Math.floor(avgContributionForKillRate)}%)</span>
-          </div>
-        </div>
-      </div>
-      <div className="champ-container">
-        <div className="list-item">
-          <div className="image-area">
-            <Image src={noChampAvatar} width={34} height={34} />
-          </div>
-          <div className="description-area">
-            <div className="name">룰루</div>
-            <div className="details">70% (7승 3패) 13.01 평점</div>
+          <div className="detail">
+            <div className="avg">
+              <KDA k={kills} d={deaths} a={assists} mode="Each" games={gameCount} colored />
+            </div>
+            <div className="kda">
+              <span className="point">
+                <KDA k={kills} d={deaths} a={assists} extraText=":1" colored />
+              </span>
+              <span className="kill-engagement-rate"> ({Math.floor(avgContributionForKillRate)}%)</span>
+            </div>
           </div>
         </div>
-        <div className="list-item">
-          <div className="image-area">
-            <Image src={noChampAvatar} width={34} height={34} />
-          </div>
-          <div className="description-area">
-            <div className="name">룰루</div>
-            <div className="details">70% (7승 3패) 13.01 평점</div>
-          </div>
+        <div className="champ-container">
+          {[...Array(3)].map((n, index) => {
+            const c = champions[index];
+            return c ? (
+              <div className="list-item" key={c.id}>
+                <div className="image-area">
+                  <ChampAvatar imageUrl={c.imageUrl} champKey={c.key} size="34px" />
+                </div>
+                <div className="description-area">
+                  <div className="name">{c.name}</div>
+                  <div className="details">
+                    <span className="win-rate">
+                      <WinRate wins={c.wins} losses={c.losses} colored />
+                    </span>
+                    {` `}({c.wins}승 {c.losses}패)
+                    <span className="spacer"> | </span>
+                    <span className="point">
+                      <KDA mode="Point" k={c.kills} d={c.deaths} a={c.assists} colored extraText=" 평점" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="list-item" key={`noChamp-${index}`}>
+                <div className="image-area">
+                  <Image src={noChampAvatar} width={34} height={34} />
+                </div>
+                <div className="description-area">
+                  <div className="details">
+                    <div className="no-champion">챔피언 정보가 없습니다.</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="list-item">
-          <div className="image-area">
-            <Image src={noChampAvatar} width={34} height={34} />
-          </div>
-          <div className="description-area">
-            <div className="name">룰루</div>
-            <div className="details">70% (7승 3패) 13.01 평점</div>
-          </div>
+        <div className="position-container">
+          <div className="title">선호 포지션 (랭크)</div>
+          {positions.map((pos, index) => {
+            return (
+              <div className="list-item" key={pos.position + index}>
+                <div className="image-area">
+                  <Image src={`/images/position/${pos.position}.svg`} width={28} height={28} />
+                </div>
+                <div className="description-area">
+                  <div className="name">{positionDic[pos.position]}</div>
+                  <div className="details">
+                    <span className="pick-rate">{Math.floor((pos.games / gameCount) * 100)}%</span>
+                    <span className="spacer"> | </span>
+                    {index === 0 ? `Win Rate ` : '승률'}
+                    <span className="win-rate">
+                      <WinRate wins={pos.wins} losses={pos.losses} />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </div>
-      <div className="position-container">
-        <div className="title">선호 포지션 (랭크)</div>
-        <div className="list-item">
-          <div className="image-area">
-            <Image src={noChampAvatar} width={34} height={34} />
-          </div>
-          <div className="description-area">
-            <div className="name">탑</div>
-            <div className="details">70% | 13.01 평점</div>
-          </div>
-        </div>
-        <div className="list-item">
-          <div className="image-area">
-            <Image src={noChampAvatar} width={34} height={34} />
-          </div>
-          <div className="description-area">
-            <div className="name">탑</div>
-            <div className="details">70% | 13.01 평점</div>
-          </div>
-        </div>
-      </div>
-    </MatcheSummaryContainer>
+      </MatcheSummaryContainer>
+    )
   );
 };
 

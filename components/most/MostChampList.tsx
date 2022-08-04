@@ -75,7 +75,7 @@ const ChampListItem = (props: ChampionType) => {
   return (
     <>
       <div className="avatar-area">
-        <ChampAvatar imageUrl={imageUrl} champName={key} size="45px" />
+        <ChampAvatar imageUrl={imageUrl} champKey={key} size="45px" />
       </div>
       <div className="name-area">
         <div className="name">{name}</div>
@@ -106,7 +106,7 @@ const RecentListItem = (props: RecentWinRateType) => {
   return (
     <>
       <div className="avatar-area">
-        <ChampAvatar imageUrl={imageUrl} champName={key} size="32px" />
+        <ChampAvatar imageUrl={imageUrl} champKey={key} size="32px" />
       </div>
       <div className="name-area">
         <div className="name">{name}</div>
