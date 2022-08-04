@@ -6,6 +6,7 @@ const Pallet = {
   widget: '#f2f2f2',
   widgetBorder: '#cdd2d2',
   normalGray: '#879292',
+  lightGray: '#999999',
   darkGray: '#666666',
   moreAlmostBlack: '#555555',
   almostBlack: '#555e5e',
@@ -33,6 +34,15 @@ export const getWinRateColor = (winRate: number) => {
   let color = '';
   if (winRate >= 60) {
     color = Pallet.darkRed;
+  }
+
+  return color;
+};
+
+export const getPointColor = (point: number) => {
+  let color = '';
+  if (point >= 6) {
+    color = Pallet.kda5;
   }
 
   return color;
