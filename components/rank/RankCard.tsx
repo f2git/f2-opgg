@@ -45,7 +45,7 @@ const RankCardContainer = styled.div<IStyleProps>`
     }
     .tier {
       font-size: 15px;
-      color: ${Colors.mainBlue};
+      color: ${Colors.blue};
       font-weight: bold;
     }
     .win-lose {

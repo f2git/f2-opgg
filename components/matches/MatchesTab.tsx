@@ -25,8 +25,8 @@ const MatchesTabContainer = styled.div<IProps>`
     margin-right: 16px;
     cursor: pointer;
     :nth-child(${(props) => props.selectedTab}) {
-      color: ${Colors.mainBlue};
-      border-bottom: 2px solid ${Colors.mainBlue};
+      color: ${Colors.blue};
+      border-bottom: 2px solid ${Colors.blue};
     }
   }
   border-bottom: 1px solid ${Colors.widgetBorder};
