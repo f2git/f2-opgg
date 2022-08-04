@@ -1,5 +1,4 @@
-import { parse } from 'node:path/win32';
-import styled, { css, StyledComponent } from 'styled-components';
+import styled from 'styled-components';
 import Colors, { getKDAColor } from '../../../styles/Colors';
 import RoundCut from '../../../utils/RoundCut';
 
@@ -34,7 +33,8 @@ const KDA = (props: IProps) => {
     const kdaColor = colored ? getKDAColor(Number(KDAValue)) : '';
     res = (
       <KDAContainer kdaColor={kdaColor}>
-        {KDAValue}:1{extraText && ` ${extraText}`}
+        {KDAValue}
+        {extraText}
       </KDAContainer>
     );
   } else {

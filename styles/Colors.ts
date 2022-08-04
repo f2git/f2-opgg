@@ -14,7 +14,6 @@ const Pallet = {
   kda3: '#2daf7f',
   kda4: '#1f8ecd',
   kda5: '#e19205',
-  winRate: '#c6443e',
   point: '#e19205',
 };
 
@@ -27,6 +26,15 @@ export const getKDAColor = (kda: number) => {
   } else if (kda >= 3) {
     color = Pallet.kda3;
   }
+  return color;
+};
+
+export const getWinRateColor = (winRate: number) => {
+  let color = '';
+  if (winRate >= 60) {
+    color = Pallet.darkRed;
+  }
+
   return color;
 };
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../store';
 import { WidgetBoxStyle } from '../../styles/GeneralStyle';
 import Colors from '../../styles/Colors';
+import WinRate from '../common/numbers/WinRate';
 
 interface IStyleProps {
   cardHeight: string;
@@ -101,7 +102,10 @@ const RankCard = ({ mode }: IProps) => {
               </span>
             </div>
 
-            <div className="win-rate">승률 {Math.floor((wins / (wins + losses)) * 100)} %</div>
+            <div className="win-rate">
+              {'승률 '}
+              <WinRate wins={wins} losses={losses} />
+            </div>
           </>
         ) : (
           <div className="unranked">Unranked</div>

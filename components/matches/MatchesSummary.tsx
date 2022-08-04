@@ -7,6 +7,8 @@ import { default as GS } from '../../styles/GeneralStyle';
 import ChampAvatar from '../common/ChampAvatar';
 import { useAppSelector } from '../../store';
 import KDA from '../common/numbers/KDA';
+import WinRate from '../common/numbers/WinRate';
+import { Game } from '../../types/matches';
 
 const MatcheSummaryContainer = styled.div`
   height: 158px;
@@ -50,6 +52,11 @@ const MatcheSummaryContainer = styled.div`
         font-size: 16px;
         .point {
           font-weight: bold;
+        }
+
+        .kill-engagement-rate {
+          font-weight: bold;
+          color: ${Colors.darkRed};
         }
       }
     }
@@ -104,28 +111,33 @@ const MatcheSummaryContainer = styled.div`
 
 const MatchesSummary = () => {
   const { matchesInfo } = useAppSelector(({ matchesReducer }) => matchesReducer);
-  const { summary } = matchesInfo!;
+  const { summary, games } = matchesInfo!;
   const { assists, deaths, kills, losses, wins } = summary;
-  const games = wins + losses;
+  const gameCount = wins + losses;
+
+  const avgContributionForKillRate =
+    games.reduce<number>((acc, { stats }) => acc + Number(stats.general.contributionForKillRate.split('%')[0]), 0) /
+    gameCount;
+  // summary에 전체 킬관여율이 없어서 부득이하게 games에 문자열로 들어있는 contributionForKillRate들을 파싱해서 계산했습니다.
 
   return (
     <MatcheSummaryContainer>
       <div className="chart-container">
         <div className="pie-chart-area">
           <div className="description">
-            {games}전 {wins}승 {losses}패
+            {gameCount}전 {wins}승 {losses}패
           </div>
           <div className="chart">2</div>
         </div>
         <div className="detail">
           <div className="avg">
-            <KDA k={kills} d={deaths} a={assists} mode="Each" games={games} colored />
+            <KDA k={kills} d={deaths} a={assists} mode="Each" games={gameCount} colored />
           </div>
           <div className="kda">
             <span className="point">
-              <KDA k={kills} d={deaths} a={assists} colored />
+              <KDA k={kills} d={deaths} a={assists} extraText=":1" colored />
             </span>
-            {' (50%)'}
+            <span className="kill-engagement-rate"> ({Math.floor(avgContributionForKillRate)}%)</span>
           </div>
         </div>
       </div>

@@ -1,50 +1,50 @@
 export type MatchOptionType = '전체' | '솔로게임' | '자유랭크';
 
+export type Game = {
+  mmr: number;
+  champion: {
+    imageUrl: string;
+    level: number;
+  };
+  spells: {
+    imageUrl: string;
+  };
+  [];
+  items: {
+    imageUrl: string;
+  };
+  [];
+  needRenew: false;
+  gameId: string;
+  createDate: number;
+  gameLength: number;
+  gameType: string;
+  summonerId: string;
+  summonerName: string;
+  tierRankShort: string;
+  stats: {
+    general: {
+      kill: number;
+      death: number;
+      assist: number;
+      kdaString: string;
+      cs: number;
+      csPerMin: number;
+      contributionForKillRate: string;
+      goldEarned: number;
+      totalDamageDealtToChampions: number;
+      largestMultiKillString: string;
+      opScoreBadge: string;
+    };
+    ward: { sightWardsBought: number; visionWardsBought: number };
+  };
+  mapInfo: null;
+  peak: string[];
+  isWin: true;
+};
+
 export type MatchesInfoType = {
-  games: [
-    {
-      mmr: number;
-      champion: {
-        imageUrl: string;
-        level: number;
-      };
-      spells: {
-        imageUrl: string;
-      };
-      [];
-      items: {
-        imageUrl: string;
-      };
-      [];
-      needRenew: false;
-      gameId: string;
-      createDate: number;
-      gameLength: number;
-      gameType: string;
-      summonerId: string;
-      summonerName: string;
-      tierRankShort: string;
-      stats: {
-        general: {
-          kill: number;
-          death: number;
-          assist: number;
-          kdaString: string;
-          cs: number;
-          csPerMin: number;
-          contributionForKillRate: string;
-          goldEarned: number;
-          totalDamageDealtToChampions: number;
-          largestMultiKillString: string;
-          opScoreBadge: string;
-        };
-        ward: { sightWardsBought: number; visionWardsBought: number };
-      };
-      mapInfo: null;
-      peak: string[];
-      isWin: true;
-    },
-  ];
+  games: Game[];
   champions: [
     {
       id: number;
