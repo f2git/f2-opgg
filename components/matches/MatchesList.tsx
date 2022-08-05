@@ -26,8 +26,8 @@ const MatchesList = () => {
 
   const ItemsInfoTyped = ItemsInfo as unknown as Items;
 
-  // 데이터에 딸려들어오는 태그를 제거하면서 줄바꿈은 남겨두기 위해 br 태그 먼저 처리 한뒤 제거
-  const removeDescriptionTags = (str: string) => str.replaceAll('<br>', '<br/>').replaceAll(/(<((?!br)[^>]+)>)/gi, '');
+  // 데이터에 딸려들어오는 태그를 제거하며 줄바꿈은 남겨둠
+  const removeDescriptionTags = (str: string) => str.replaceAll(/(<((?!br)[^>]+)>)/gi, '');
 
   return (
     <MatchesListContainer>
