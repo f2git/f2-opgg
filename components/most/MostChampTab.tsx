@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import MostChampList from './MostChampList';
 
-import { FlexHoriVertiCenterStyle, WidgetBoxStyle } from '../../styles/GeneralStyle';
+import { FlexHorizontalVertiCalenterStyle, WidgetBoxStyle } from '../../styles/GeneralStyle';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { selectMostOption, fetchMostInfoByName } from '../../store/mostSlice';
 import { MostOptionType } from '../../types/mostInfo';
@@ -15,7 +15,7 @@ const MostChampTabContainer = styled.div<{ selectedTab: number }>`
     display: flex;
     cursor: pointer;
     .tab {
-      ${FlexHoriVertiCenterStyle}
+      ${FlexHorizontalVertiCalenterStyle}
       flex:1;
       border-bottom: 1px solid ${Colors.widgetBorder};
       font-size: 12px;

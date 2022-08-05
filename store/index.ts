@@ -4,10 +4,12 @@ import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 
 import summonerReducer from './summonerSlice';
 import mostReducer from './mostSlice';
+import matchesReducer from './matchesSlice';
 
 const rootReducer = combineReducers({
   summonerReducer,
   mostReducer,
+  matchesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

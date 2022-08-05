@@ -3,6 +3,7 @@ import Colors from '../../styles/Colors';
 import { ChampionType, MostInfoType, MostOptionType, RecentWinRateType } from '../../types/mostInfo';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
+import WinRate from '../common/numbers/WinRate';
 import BarChart from './BarChart';
 
 const MostChampListContainer = styled.div`
@@ -70,11 +71,11 @@ const MostChampListContainer = styled.div`
 `;
 
 const ChampListItem = (props: ChampionType) => {
-  const { key, cs, wins, kills, deaths, assists, name, games, imageUrl } = props;
+  const { key, cs, wins, kills, losses, deaths, assists, name, games, imageUrl } = props;
   return (
     <>
       <div className="avatar-area">
-        <ChampAvatar imageUrl={imageUrl} champName={key} size="45px" />
+        <ChampAvatar imageUrl={imageUrl} champKey={key} size="45px" />
       </div>
       <div className="name-area">
         <div className="name">{name}</div>
@@ -84,14 +85,16 @@ const ChampListItem = (props: ChampionType) => {
       </div>
       <div className="point-area column-center">
         <div className="point">
-          <KDA k={kills} d={deaths} a={assists} extraText="평점" colored />
+          <KDA k={kills} d={deaths} a={assists} extraText=":1 평점" colored />
         </div>
         <div className="kda">
           <KDA mode="Each" k={kills} d={deaths} a={assists} games={games} />
         </div>
       </div>
       <div className="winRate-area column-center">
-        <div className="winRate">{Math.floor((wins / games) * 100)}%</div>
+        <div className="winRate">
+          <WinRate wins={wins} losses={losses} colored />
+        </div>
         <div className="game-counts">{games}게임</div>
       </div>
     </>
@@ -103,7 +106,7 @@ const RecentListItem = (props: RecentWinRateType) => {
   return (
     <>
       <div className="avatar-area">
-        <ChampAvatar imageUrl={imageUrl} champName={key} size="32px" />
+        <ChampAvatar imageUrl={imageUrl} champKey={key} size="32px" />
       </div>
       <div className="name-area">
         <div className="name">{name}</div>

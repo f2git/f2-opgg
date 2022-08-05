@@ -1,6 +1,5 @@
-import { parse } from 'node:path/win32';
-import styled, { css, StyledComponent } from 'styled-components';
-import Colors, { getKDAColor } from '../../../styles/Colors';
+import styled from 'styled-components';
+import Colors, { getKDAColor, getPointColor } from '../../../styles/Colors';
 import RoundCut from '../../../utils/RoundCut';
 
 interface IStyledProp {
@@ -16,7 +15,7 @@ const KDAContainer = styled.span<IStyledProp>`
 `;
 
 interface IProps {
-  mode?: 'Total' | 'Each';
+  mode?: 'Total' | 'Each' | 'Point';
   colored?: boolean;
   extraText?: string;
   k: number;
@@ -29,12 +28,18 @@ const KDA = (props: IProps) => {
   const { k, d, a, games, mode, extraText, colored } = props;
   let res;
 
-  if (mode === 'Total') {
-    const KDAValue = RoundCut((k + a) / d, 2);
-    const kdaColor = colored ? getKDAColor(Number(KDAValue)) : '';
+  if (mode === 'Total' || mode === 'Point') {
+    const value = Number(RoundCut((k + a) / d, 2));
+
+    let color = '';
+    if (colored)
+      if (mode === 'Point') color = getPointColor(value);
+      else color = getKDAColor(value);
+
     res = (
-      <KDAContainer kdaColor={kdaColor}>
-        {KDAValue}:1{extraText && ` ${extraText}`}
+      <KDAContainer kdaColor={color}>
+        {value}
+        {extraText}
       </KDAContainer>
     );
   } else {

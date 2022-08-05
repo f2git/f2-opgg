@@ -1,10 +1,14 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
+import MatchesList from '../../components/matches/MatchesList';
+import MatchesSummary from '../../components/matches/MatchesSummary';
+import MatchesTap from '../../components/matches/MatchesTab';
 import MostChampTab from '../../components/most/MostChampTab';
 import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
 
 import { useAppSelector, wrapper } from '../../store';
+import { fetchMatchesInfoByName } from '../../store/matchesSlice';
 import { fetchMostInfoByName } from '../../store/mostSlice';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
@@ -34,16 +38,9 @@ const SummonerPageContainer = styled.div`
     height: 100%;
     margin: 0 auto;
   }
-
-  .test-card {
-    width: 100%;
-    background-color: pink;
-    height: 150px;
-    border-radius: 2px;
-  }
 `;
 
-const SummonerPage = ({ name }: { name: string }) => {
+const SummonerPage = () => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
 
   return (
@@ -61,7 +58,9 @@ const SummonerPage = ({ name }: { name: string }) => {
             <MostChampTab />
           </div>
           <div className="details-main-area">
-            <div className="test-card">4</div>
+            <MatchesTap />
+            <MatchesSummary />
+            <MatchesList />
           </div>
         </div>
       </SummonerPageContainer>
@@ -78,8 +77,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = wrapper.getStaticProps((store) => async ({ params }) => {
   const name = params!.summoner;
+
   await store.dispatch(fetchSummonerBaseInfoByName(name as string));
   await store.dispatch(fetchMostInfoByName());
+  await store.dispatch(fetchMatchesInfoByName());
 
   return {
     props: {
