@@ -14,11 +14,13 @@ export const FlexHorizontalVertiCalenterStyle = css`
 export const FlexRow = css`
   display: flex;
   flex-direction: Row;
+  width: 100%;
 `;
 
 export const FlexColumn = css`
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 export const FlexRowVerticalCenter = css`
