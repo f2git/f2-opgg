@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
+import MatchesList from '../../components/matches/MatchesList';
 import MatchesSummary from '../../components/matches/MatchesSummary';
 import MatchesTap from '../../components/matches/MatchesTab';
 import MostChampTab from '../../components/most/MostChampTab';
@@ -37,16 +38,9 @@ const SummonerPageContainer = styled.div`
     height: 100%;
     margin: 0 auto;
   }
-
-  .test-card {
-    width: 100%;
-    background-color: pink;
-    height: 150px;
-    border-radius: 2px;
-  }
 `;
 
-const SummonerPage = ({ name }: { name: string }) => {
+const SummonerPage = () => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
 
   return (
@@ -66,7 +60,7 @@ const SummonerPage = ({ name }: { name: string }) => {
           <div className="details-main-area">
             <MatchesTap />
             <MatchesSummary />
-            <div className="test-card" />
+            <MatchesList />
           </div>
         </div>
       </SummonerPageContainer>

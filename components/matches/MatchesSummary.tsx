@@ -2,7 +2,6 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { PieChart } from 'react-minimal-pie-chart';
 import { useAppSelector } from '../../store';
-
 import Colors from '../../styles/Colors';
 import noChampAvatar from '../../public/images/noChampAvatar.svg';
 import { default as GS } from '../../styles/GeneralStyle';
@@ -47,6 +46,7 @@ const MatcheSummaryContainer = styled.div`
     }
     .detail {
       ${GS.FlexColumnHorizontalCenter}
+      justify-content: center;
       flex: 1;
       .avg {
         font-size: 11px;
@@ -220,7 +220,7 @@ const MatchesSummary = () => {
           return (
             <div className="list-item" key={pos.position + index}>
               <div className="image-area">
-                <Image src={`/images/position/${pos.position}.svg`} width={28} height={28} />
+                <Image src={`/images/position/${pos.position}.svg`} width={28} height={28} priority />
               </div>
               <div className="description-area">
                 <div className="name">{positionDic[pos.position]}</div>
