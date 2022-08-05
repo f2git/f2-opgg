@@ -6,11 +6,12 @@ import { Game } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
+import ScoreBadge from './ScoreBadge';
 import TooltipIcon from './TooltipIcon';
 
-const MatchesListItemContainer = styled.div`
+const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   ${GS.FlexRow}
-  background-color: #d6b5b2;
+  background-color: ${({ isWin }) => (isWin ? '#d6b5b2' : '#b0ceea')};
   height: 90px;
   .list-contents {
     ${GS.FlexRowVerticalCenter}
@@ -39,7 +40,7 @@ const MatchesListItemContainer = styled.div`
       }
       .is-win {
         font-weight: bold;
-        color: #d0021b;
+        color: ${({ isWin }) => (isWin ? '#d0021b' : '#2c709b')};
       }
     }
     .champion-area {
@@ -95,9 +96,14 @@ const MatchesListItemContainer = styled.div`
         align-content: space-around;
       }
       .control {
+        ${GS.FlexRowVerticalCenter}
+        justify-content: center;
         padding-top: 2px;
         font-size: 11px;
         color: #000;
+        .name {
+          padding-left: 3px;
+        }
       }
     }
     .summoner-area {
@@ -106,8 +112,8 @@ const MatchesListItemContainer = styled.div`
   }
   .detail-button {
     width: 30px;
-    background-color: #e89c95;
-    border: 1px solid #c8817c;
+    background-color: ${({ isWin }) => (isWin ? '#e89c95' : '#7fb0e1')};
+    border: 1px solid ${({ isWin }) => (isWin ? '#c8817c' : '#549dc7')};
   }
 `;
 
@@ -119,13 +125,15 @@ interface IProps {
     data: ItemData;
   }[];
 }
+
 const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
   const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
+  const badge = stats.general.opScoreBadge;
 
   return (
-    <MatchesListItemContainer>
+    <MatchesListItemContainer isWin={isWin}>
       <div className="list-contents">
         <div className="summary-area">
           <div className="type">{gameType}</div>
@@ -160,7 +168,7 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
             <KDA k={kill} d={death} a={assist} mode="Total" extraText=":1 " />
             평점
           </div>
-          <div className="badges">뺏지 뺏지</div>
+          <div className="badges">{badge && <ScoreBadge name={badge} />}</div>
         </div>
         <div className="level-area">
           <div className="level">레벨 {champion.level}</div>
@@ -193,10 +201,13 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
             </div>
             <div className="ward-build-icons">
               <TooltipIcon id="" size="22px" />
-              <TooltipIcon id="" imageUrl="/images/icon-buildred-p.png" size="22px" />
+              <TooltipIcon id="" imageUrl={`/images/icon-build-${isWin ? `red` : `blue`}.png`} size="22px" />
             </div>
           </div>
-          <div className="control">제어 와드 1</div>
+          <div className="control">
+            <TooltipIcon id="" imageUrl={`/images/icon-ward-${isWin ? `red` : `blue`}.svg`} size="16px" />
+            <span className="name">제어 와드 1</span>
+          </div>
         </div>
         <div className="summoner-area" />
       </div>
