@@ -29,7 +29,7 @@ const ChampAvatar = ({ champKey: champName, imageUrl, size }: IProps) => {
     <ChampAvatarContainer size={size}>
       <a target="blank" href={avatarLink}>
         <div>
-          <Image src={imageUrlHTTPS} layout="fill" objectFit="contain" />
+          <Image src={imageUrlHTTPS} layout="fill" objectFit="contain" priority />
         </div>
       </a>
     </ChampAvatarContainer>
