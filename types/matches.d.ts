@@ -8,12 +8,10 @@ export type Game = {
   };
   spells: {
     imageUrl: string;
-  };
-  [];
+  }[];
   items: {
     imageUrl: string;
-  };
-  [];
+  }[];
   needRenew: false;
   gameId: string;
   createDate: number;
