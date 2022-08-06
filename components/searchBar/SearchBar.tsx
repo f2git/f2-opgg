@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { default as GS } from '../../styles/GeneralStyle';
 import ggLogo from '../../public/images/icon-gg.svg';
@@ -47,16 +48,31 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
 `;
 
 const SearchBar = () => {
-  const [debouncedKeyword, keyword, setKeyword] = useDebounce<string>('', 200);
+  const [debouncedKeyword, keyword, setKeyword] = useDebounce<string>('', 100);
   const [bottomModal, setBottomModal] = useState(false);
   const componentREf = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const modalToggle = (focused: boolean) => {
+    setBottomModal(focused);
+  };
+
+  const clearSearchBar = () => {
+    setKeyword('');
+    modalToggle(false);
+  };
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setKeyword(e.currentTarget.value);
   };
 
-  const modalToggle = (focused: boolean) => {
-    setBottomModal(focused);
+  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter') {
+      router.push(keyword);
+      clearSearchBar();
+    } else if (!bottomModal) {
+      setBottomModal(true);
+    }
   };
 
   useOutsideClick(componentREf, () => modalToggle(false));
@@ -70,6 +86,7 @@ const SearchBar = () => {
             value={keyword}
             onChange={onChange}
             onFocus={() => modalToggle(true)}
+            onKeyDown={onKeyDown}
           />
         </div>
         <div className="button-area">
@@ -77,7 +94,11 @@ const SearchBar = () => {
         </div>
       </div>
       <div className="bottom-modal-area">
-        {keyword ? <AutocompleteModal keyword={debouncedKeyword} /> : <RecentKeywordModal />}
+        {keyword ? (
+          <AutocompleteModal keyword={debouncedKeyword} onClick={() => clearSearchBar()} />
+        ) : (
+          <RecentKeywordModal />
+        )}
       </div>
     </SearchBarContainer>
   );
