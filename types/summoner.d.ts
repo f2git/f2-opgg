@@ -57,3 +57,9 @@ export type AutocompleteSummonerType = {
     border_image_url: string;
   };
 };
+
+export type HistoryType = {
+  name: string;
+  time: number;
+  isFavorite: boolean;
+};

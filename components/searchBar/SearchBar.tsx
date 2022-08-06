@@ -16,7 +16,7 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
   .search-bar {
     ${GS.FlexRow}
     background-color: white;
-    border-radius: 2px;
+    border-radius: 4px;
     flex-direction: row;
     .input-area {
       ${GS.FlexRowVerticalCenter}
@@ -49,6 +49,7 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
 
 const SearchBar = () => {
   const [debouncedKeyword, keyword, setKeyword] = useDebounce<string>('', 100);
+
   const [bottomModal, setBottomModal] = useState(false);
   const componentREf = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -93,13 +94,16 @@ const SearchBar = () => {
           <Image src={ggLogo} width={32} height={32} priority />
         </div>
       </div>
-      <div className="bottom-modal-area">
-        {keyword ? (
-          <AutocompleteModal keyword={debouncedKeyword} onClick={() => clearSearchBar()} />
-        ) : (
-          <RecentKeywordModal />
-        )}
-      </div>
+
+      {bottomModal && (
+        <div className="bottom-modal-area">
+          {keyword ? (
+            <AutocompleteModal keyword={debouncedKeyword} onClick={() => clearSearchBar()} />
+          ) : (
+            <RecentKeywordModal onClick={() => clearSearchBar()} />
+          )}
+        </div>
+      )}
     </SearchBarContainer>
   );
 };

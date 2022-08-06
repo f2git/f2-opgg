@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MatchesList from '../../components/matches/MatchesList';
 import MatchesSummary from '../../components/matches/MatchesSummary';
@@ -12,6 +13,9 @@ import { fetchMatchesInfoByName } from '../../store/matchesSlice';
 import { fetchMostInfoByName } from '../../store/mostSlice';
 import { fetchSummonerBaseInfoByName } from '../../store/summonerSlice';
 import Constants from '../../styles/Constants';
+import useLocalStorage from '../../utils/useLocalStorage';
+
+import { HistoryType } from '../../types/summoner';
 
 const SummonerPageContainer = styled.div`
   .summoner-profile-area {
@@ -40,8 +44,27 @@ const SummonerPageContainer = styled.div`
   }
 `;
 
-const SummonerPage = () => {
+const SummonerPage = ({ name }: { name: string }) => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
+  const [history, setHistory] = useLocalStorage('history', []);
+
+  useEffect(() => {
+    if (selectedSummoner) {
+      const newHistory = {
+        name: selectedSummoner.name,
+        time: Date.now(),
+        isFavorite: false,
+      };
+
+      console.log(history);
+
+      if (history.length <= 0) {
+        setHistory([newHistory]);
+      } else {
+        setHistory([...history.filter((v: HistoryType) => v.name !== selectedSummoner.name), newHistory]);
+      }
+    }
+  }, [selectedSummoner]);
 
   return (
     selectedSummoner && (
