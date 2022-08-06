@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import { default as GS } from '../../styles/GeneralStyle';
 import { ItemData } from '../../types/item';
-import { Game } from '../../types/matches';
+import { GameType } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
@@ -118,7 +118,7 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
 `;
 
 interface IProps {
-  gameInfo: Game;
+  gameInfo: GameType;
   itemsInfo: {
     id: string;
     imageUrl: string;
