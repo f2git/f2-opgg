@@ -49,5 +49,11 @@ export type AutocompleteSummonerType = {
   profile_image_url: string;
   level: number;
   updated_at: string;
-  solo_tier_info: string;
+  solo_tier_info: {
+    tier: string;
+    division: number;
+    lp: number;
+    tier_image_url: string;
+    border_image_url: string;
+  };
 };
