@@ -1,18 +1,15 @@
 import Axios, { AxiosError } from 'axios';
 
-const axios = Axios.create({
+const mainAxios = Axios.create({
   baseURL: 'https://codingtest.op.gg/api/summoner/',
   timeout: 10000,
   withCredentials: false,
 });
 
-axios.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  (err: AxiosError) => {
-    return Promise.reject(err.response);
-  },
-);
+const opggAxios = Axios.create({
+  baseURL: '/getSummerAutocomplete',
+  timeout: 10000,
+  withCredentials: false,
+});
 
-export default axios;
+export { mainAxios, opggAxios };

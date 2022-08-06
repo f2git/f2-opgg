@@ -15,6 +15,11 @@ const globalStyle = css`
     display: flex;
     flex-direction: column;
   }
+  a {
+    color: none !important;
+    text-decoration: none;
+    box-shadow: none;
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`

@@ -1,6 +1,6 @@
 export type MatchOptionType = '전체' | '솔로게임' | '자유랭크';
 
-export type Game = {
+export type GameType = {
   mmr: number;
   champion: {
     imageUrl: string;
@@ -42,7 +42,7 @@ export type Game = {
 };
 
 export type MatchesInfoType = {
-  games: Game[];
+  games: GameType[];
   champions: [
     {
       id: number;

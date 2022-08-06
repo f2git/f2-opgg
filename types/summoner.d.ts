@@ -38,3 +38,28 @@ export type SummonerType = {
   };
   profileBackgroundImageUrl: string;
 };
+
+export type AutocompleteSummonerType = {
+  id: number;
+  summoner_id: string;
+  acct_id: string;
+  puuid: string;
+  name: string;
+  internal_name: string;
+  profile_image_url: string;
+  level: number;
+  updated_at: string;
+  solo_tier_info: {
+    tier: string;
+    division: number;
+    lp: number;
+    tier_image_url: string;
+    border_image_url: string;
+  };
+};
+
+export type HistoryType = {
+  name: string;
+  time: number;
+  isFavorite: boolean;
+};

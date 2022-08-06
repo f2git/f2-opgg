@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  async rewrites() {
+    return [
+      {
+        source: '/getSummerAutocomplete/:path*',
+        destination: 'https://www.op.gg/api/summoners/kr/autocomplete?keyword=:path*',
+      },
+    ];
+  },
   async redirects() {
     return [
       {

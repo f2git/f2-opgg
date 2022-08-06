@@ -1,15 +1,19 @@
-import axios from '.';
+import { mainAxios, opggAxios } from '.';
 
 const getSummonerBaseInfo = (name: string) => {
-  return axios.get(`${encodeURIComponent(name)}`);
+  return mainAxios.get(`${encodeURIComponent(name)}`);
 };
 
 const getSummonerMostInfo = (name: string) => {
-  return axios.get(`${encodeURIComponent(name)}/mostInfo`);
+  return mainAxios.get(`${encodeURIComponent(name)}/mostInfo`);
 };
 
 const getSummonerMatcheInfo = (name: string) => {
-  return axios.get(`${encodeURIComponent(name)}/matches`);
+  return mainAxios.get(`${encodeURIComponent(name)}/matches`);
 };
 
-export { getSummonerBaseInfo, getSummonerMostInfo, getSummonerMatcheInfo };
+const getSummonerNames = (name: string) => {
+  return opggAxios.get(`/${name}`);
+};
+
+export { getSummonerBaseInfo, getSummonerMostInfo, getSummonerMatcheInfo, getSummonerNames };
