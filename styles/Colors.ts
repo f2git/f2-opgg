@@ -8,6 +8,7 @@ const Pallet = {
   widget: '#f2f2f2',
   widgetBorder: '#cdd2d2',
   normalGray: '#879292',
+  moreLightGray: '#e3e3e3',
   lightGray: '#999999',
   darkGray: '#666666',
   moreAlmostBlack: '#555555',
