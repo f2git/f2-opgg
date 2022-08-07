@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import Colors, { getKDAColor, getPointColor } from '../../../styles/Colors';
 import RoundCut from '../../../utils/RoundCut';
@@ -63,4 +64,4 @@ KDA.defaultProps = {
   games: 1,
 };
 
-export default KDA;
+export default memo(KDA);

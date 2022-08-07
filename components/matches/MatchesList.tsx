@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../store';
 import MatchesListItem from './MatchesListItem';
-import ItemsInfo from '../../public/data/item.json';
-import { ItemData, Items } from '../../types/item';
-import { getMatchDetail } from '../../api/summonerAPI';
 import { GameType } from '../../types/matches';
 
 const MatchesListContainer = styled.div`
@@ -20,6 +17,7 @@ const MatchesList = () => {
   const [games, setGames] = useState<GameType[] | null>(null);
 
   useEffect(() => {
+    setGames([]);
     if (matchesInfo)
       setGames(
         matchesInfo.games.filter((game) => {
@@ -29,27 +27,12 @@ const MatchesList = () => {
           return false;
         }),
       );
-  }, [matchOption]);
-
-  const ItemsInfoTyped = ItemsInfo as unknown as Items;
-
-  // 데이터에 딸려들어오는 태그를 제거하며 줄바꿈은 남겨둠
-  const removeDescriptionTags = (str: string) => str.replaceAll(/(<((?!br)[^>]+)>)/gi, '');
+  }, [matchesInfo, matchOption]);
 
   return (
     <MatchesListContainer>
       {games?.map((game) => {
-        const items = game.items.map((item) => {
-          const itemId = item.imageUrl.split('item/')[1].split('.png')[0];
-          const nowItemData = ItemsInfoTyped.data[itemId];
-          const TagRemovedItemData: ItemData = {
-            ...nowItemData,
-            description: removeDescriptionTags(nowItemData.description),
-          };
-          return { id: itemId, imageUrl: item.imageUrl, data: TagRemovedItemData };
-        });
-
-        return <MatchesListItem key={game.gameId} gameInfo={game} itemsInfo={items} />;
+        return <MatchesListItem key={game.gameId} gameInfo={game} />;
       })}
     </MatchesListContainer>
   );

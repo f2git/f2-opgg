@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Children, useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
@@ -33,13 +33,11 @@ interface IProps {
   imageUrl?: string;
   size?: string;
   children?: string;
-  tooltipText?: {
-    title: string;
-    content: string;
-  };
+  title?: string;
+  content?: string;
 }
 
-const ToolitpIcon = ({ id, imageUrl, size, children, tooltipText }: IProps) => {
+const ToolitpIcon = ({ id, imageUrl, size, title, content }: IProps) => {
   const [tooltip, setTooltip] = useState(false);
   const toolTipId = `${id}`;
 
@@ -68,10 +66,11 @@ const ToolitpIcon = ({ id, imageUrl, size, children, tooltipText }: IProps) => {
       )}
       {tooltip && (
         <ReactTooltip id={toolTipId} effect="solid" multiline html>
-          {tooltipText &&
+          {content &&
             `<div style="max-width:250px">
-          <div style="color:cyan;padding-bottom:20px">${tooltipText.title}</div>
-          <div>${tooltipText.content}</div>
+          <div style="color:cyan;padding-bottom:20px">${title}</div>
+          <div></div>
+          ${content}
           
           </div>`}
         </ReactTooltip>
@@ -85,7 +84,8 @@ ToolitpIcon.defaultProps = {
   size: '22px',
   imageUrl: '',
   children: null,
-  tooltipText: null,
+  title: null,
+  content: null,
 };
 
-export default ToolitpIcon;
+export default memo(ToolitpIcon);

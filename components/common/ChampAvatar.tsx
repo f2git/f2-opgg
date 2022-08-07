@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 
@@ -36,4 +37,4 @@ const ChampAvatar = ({ champKey: champName, imageUrl, size }: IProps) => {
   );
 };
 
-export default ChampAvatar;
+export default memo(ChampAvatar);

@@ -106,7 +106,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => async ({ params 
     props: {
       name,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 });
 

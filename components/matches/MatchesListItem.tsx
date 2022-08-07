@@ -1,14 +1,16 @@
+import { memo } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import { default as GS, FlexColumn } from '../../styles/GeneralStyle';
-import { ItemData } from '../../types/item';
+import { ItemData, Items } from '../../types/item';
 import { GameType, Player } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
 import ScoreBadge from './ScoreBadge';
 import TooltipIcon from './TooltipIcon';
+import ItemsInfo from '../../public/data/item.json';
 
 const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   ${GS.FlexRow}
@@ -143,14 +145,9 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
 
 interface IProps {
   gameInfo: GameType;
-  itemsInfo: {
-    id: string;
-    imageUrl: string;
-    data: ItemData;
-  }[];
 }
 
-const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
+const MatchesListItem = ({ gameInfo }: IProps) => {
   const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
@@ -205,20 +202,18 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
           <div className="item-ward-build">
             <div className="item-icons">
               {[...Array(6)].map((n, index) => {
-                const item = itemsInfo[index];
-                const itemId = item && item.id;
-                const tooltipId = item ? `${itemId}-${gameId}-${index}` : '';
-
-                const tooltipText = item && {
-                  title: item.data.name,
-                  content: item.data.description,
-                };
+                const imageUrl = gameInfo.items[index]?.imageUrl;
+                const itemId = imageUrl && imageUrl.split('item/')[1].split('.png')[0];
+                const tooltipId = itemId ? `${itemId}-${gameId}-${index}` : '';
+                const ItemsInfoTyped = ItemsInfo as unknown as Items;
+                const item = ItemsInfoTyped.data[itemId];
                 return (
                   <TooltipIcon
                     id={tooltipId}
                     key={`${gameId}-${itemId}-${index}`}
-                    imageUrl={item && item.imageUrl}
-                    tooltipText={tooltipText}
+                    imageUrl={item && imageUrl}
+                    title={item && item.name}
+                    content={item && item.description}
                   />
                 );
               })}
@@ -234,14 +229,12 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
           </div>
         </div>
         <div className="summoner-area">
-          {/* {teams && (
-            <> */}
           <div className="team">
             {teams &&
               teams.map((team) =>
                 team.players.map((player) => (
                   <div className="player">
-                    <Image width={16} height={16} src={player.champion.imageUrl} priority />
+                    <Image width={16} height={16} src={player.champion.imageUrl} loading="eager" priority />
                     <div className="name">{player.summonerName}</div>
                   </div>
                 )),
@@ -254,4 +247,4 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
   );
 };
 
-export default MatchesListItem;
+export default memo(MatchesListItem);
