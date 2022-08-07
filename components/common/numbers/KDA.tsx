@@ -30,7 +30,7 @@ const KDA = (props: IProps) => {
   let res;
 
   if (mode === 'Total' || mode === 'Point') {
-    const value = Number(RoundCut((k + a) / d, 2));
+    const value = d !== 0 ? Number(RoundCut((k + a) / d, 2)) : 0;
 
     let color = '';
     if (colored)
