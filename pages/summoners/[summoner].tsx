@@ -55,9 +55,6 @@ const SummonerPage = ({ name }: { name: string }) => {
         time: Date.now(),
         isFavorite: false,
       };
-
-      console.log(history);
-
       if (history.length <= 0) {
         setHistory([newHistory]);
       } else {

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getSummonerMatcheInfo } from '../api/summonerAPI';
+import { getSummonerMatchInfo } from '../api/summonerAPI';
 import { MatchOptionType, MatchesInfoType } from '../types/matches';
 
 interface MatchesReduxState {
@@ -16,8 +16,8 @@ export const fetchMatchesInfoByName = createAsyncThunk(
   async (args, { getState, rejectWithValue }) => {
     const state: any = getState();
     const { name } = state.summonerReducer.selected;
-    const res = await getSummonerMatcheInfo(name);
-    return res.data;
+    const res = await getSummonerMatchInfo(name);
+    return res;
   },
 );
 
