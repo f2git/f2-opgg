@@ -13,13 +13,12 @@ const MatchesListContainer = styled.div`
 `;
 
 const MatchesList = () => {
-  const { selected } = useAppSelector(({ summonerReducer }) => summonerReducer);
   const { matchesInfo, matchOption } = useAppSelector(({ matchesReducer }) => matchesReducer);
   const [games, setGames] = useState<GameType[] | null>(null);
   const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => setShow(true), 250);
+    setTimeout(() => setShow(true), 350);
   }, []);
 
   useEffect(() => {

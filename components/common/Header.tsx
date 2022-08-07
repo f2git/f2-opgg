@@ -30,7 +30,7 @@ const HeaderContainer = styled.div<{ scrollbarWidth: string }>`
 `;
 
 const Header = () => {
-  const { height, width } = useScrollbarSize();
+  const { width } = useScrollbarSize();
 
   return (
     <HeaderContainer scrollbarWidth={`${width + 1}px`}>

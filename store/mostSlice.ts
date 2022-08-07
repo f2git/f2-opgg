@@ -11,15 +11,12 @@ const initialState: MostReduxState = {
   mostOption: '챔피언 승률',
 };
 
-export const fetchMostInfoByName = createAsyncThunk(
-  'mostInfo/fetchByName',
-  async (args, { getState, rejectWithValue }) => {
-    const state: any = getState();
-    const { name } = state.summonerReducer.selected;
-    const res = await getSummonerMostInfo(name);
-    return res.data;
-  },
-);
+export const fetchMostInfoByName = createAsyncThunk('mostInfo/fetchByName', async (args, { getState }) => {
+  const state: any = getState();
+  const { name } = state.summonerReducer.selected;
+  const res = await getSummonerMostInfo(name);
+  return res.data;
+});
 
 const MostSlice = createSlice({
   name: 'most',

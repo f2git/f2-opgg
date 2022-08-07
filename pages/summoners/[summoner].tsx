@@ -1,5 +1,5 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { GetStaticPaths } from 'next';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import MatchesList from '../../components/matches/MatchesList';
 import MatchesSummary from '../../components/matches/MatchesSummary';
@@ -44,7 +44,7 @@ const SummonerPageContainer = styled.div`
   }
 `;
 
-const SummonerPage = ({ name }: { name: string }) => {
+const SummonerPage = () => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
   const [history, setHistory] = useLocalStorage('history', []);
   useEffect(() => {

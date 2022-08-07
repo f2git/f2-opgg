@@ -2,9 +2,9 @@ import { memo } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
-import { default as GS, FlexColumn } from '../../styles/GeneralStyle';
-import { ItemData, Items } from '../../types/item';
-import { GameType, Player } from '../../types/matches';
+import { default as GS } from '../../styles/GeneralStyle';
+import { Items } from '../../types/item';
+import { GameType } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
@@ -148,7 +148,7 @@ interface IProps {
 }
 
 const MatchesListItem = ({ gameInfo }: IProps) => {
-  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId, teams } = gameInfo;
+  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
   const badge = stats.general.opScoreBadge;

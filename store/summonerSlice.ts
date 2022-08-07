@@ -10,13 +10,10 @@ const initialState: SummonerReduxState = {
   selected: null,
 };
 
-export const fetchSummonerBaseInfoByName = createAsyncThunk(
-  'summoners/fetchBaseInfoByName',
-  async (name: string, { rejectWithValue }) => {
-    const res = await getSummonerBaseInfo(name);
-    return res.data.summoner;
-  },
-);
+export const fetchSummonerBaseInfoByName = createAsyncThunk('summoners/fetchBaseInfoByName', async (name: string) => {
+  const res = await getSummonerBaseInfo(name);
+  return res.data.summoner;
+});
 
 const summonerSlice = createSlice({
   name: 'summoner',
