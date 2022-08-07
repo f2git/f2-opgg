@@ -8,6 +8,7 @@ const globalStyle = css`
     box-sizing: border-box;
   }
   body {
+    margin-left: calc(100vw - 100%);
     background-color: ${Colors.background};
   }
   #__next {
