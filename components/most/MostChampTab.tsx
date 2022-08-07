@@ -17,12 +17,12 @@ const MostChampTabContainer = styled.div<{ selectedTab: number }>`
     .tab {
       ${FlexHorizontalVertiCalenterStyle}
       flex:1;
-      border-bottom: 1px solid ${Colors.widgetBorder};
+      /* border-bottom: 1px solid ${Colors.widgetBorder}; */
       font-size: 12px;
       color: ${Colors.normalGray};
 
       :nth-child(${({ selectedTab }) => selectedTab}) {
-        background-color: ${Colors.background};
+        background-color: ${Colors.widgetBackground};
         border-bottom: none;
         color: ${Colors.almostBlackPlusFewRed};
         font-weight: bold;

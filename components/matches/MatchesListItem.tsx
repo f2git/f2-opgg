@@ -233,7 +233,7 @@ const MatchesListItem = ({ gameInfo }: IProps) => {
             {teams &&
               teams.map((team) =>
                 team.players.map((player) => (
-                  <div className="player">
+                  <div className="player" key={`${player.summonerId}-${team.teamId}`}>
                     <Image width={16} height={16} src={player.champion.imageUrl} loading="eager" priority />
                     <div className="name">{player.summonerName}</div>
                   </div>
