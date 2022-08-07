@@ -35,7 +35,7 @@ const ListItemBackFlip = keyframes`
   }
 `;
 
-const getDelay = (n: number) => `${(n + 1) * 0.085 + 0.1}`;
+const getDelay = (n: number) => `${(n + 1) * 0.05 + 0.1}`;
 
 const MostChampionListItemContainer = styled.div<{ index: number }>`
   height: 53px;

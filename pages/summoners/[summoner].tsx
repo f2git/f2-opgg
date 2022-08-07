@@ -47,7 +47,6 @@ const SummonerPageContainer = styled.div`
 const SummonerPage = ({ name }: { name: string }) => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
   const [history, setHistory] = useLocalStorage('history', []);
-
   useEffect(() => {
     if (selectedSummoner) {
       const newHistory = {
@@ -106,7 +105,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => async ({ params 
     props: {
       name,
     },
-    revalidate: 1,
+    revalidate: 30,
   };
 });
 

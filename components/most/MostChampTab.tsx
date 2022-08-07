@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import MostChampList from './MostChampList';
 
 import { FlexHorizontalVertiCalenterStyle, WidgetBoxStyle } from '../../styles/GeneralStyle';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { selectMostOption, fetchMostInfoByName } from '../../store/mostSlice';
+import { selectMostOption } from '../../store/mostSlice';
 import { MostOptionType } from '../../types/mostInfo';
 
 const MostChampTabContainer = styled.div<{ selectedTab: number }>`

@@ -13,11 +13,16 @@ const MatchesListContainer = styled.div`
 `;
 
 const MatchesList = () => {
+  const { selected } = useAppSelector(({ summonerReducer }) => summonerReducer);
   const { matchesInfo, matchOption } = useAppSelector(({ matchesReducer }) => matchesReducer);
   const [games, setGames] = useState<GameType[] | null>(null);
+  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
-    setGames([]);
+    setTimeout(() => setShow(true), 250);
+  }, []);
+
+  useEffect(() => {
     if (matchesInfo)
       setGames(
         matchesInfo.games.filter((game) => {
@@ -31,9 +36,11 @@ const MatchesList = () => {
 
   return (
     <MatchesListContainer>
-      {games?.map((game) => {
-        return <MatchesListItem key={game.gameId} gameInfo={game} />;
-      })}
+      {games &&
+        show &&
+        games.map((game) => {
+          return <MatchesListItem key={game.gameId} gameInfo={game} />;
+        })}
     </MatchesListContainer>
   );
 };

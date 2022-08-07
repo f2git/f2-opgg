@@ -79,7 +79,7 @@ const AutocompleteModal = ({ keyword, onClick }: IProps) => {
         {summoners.map((summoner) => {
           const { profile_image_url, name, solo_tier_info, level } = summoner;
           return (
-            <Link key={name} href={`/summoners/${name}`}>
+            <Link key={name} href={`/summoners/${name}`} prefetch={false}>
               <div className="list-item" onClick={onClick}>
                 <div className="profile-image">
                   {profile_image_url && <Image layout="fill" src={profile_image_url} priority />}
