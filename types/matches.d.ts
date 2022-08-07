@@ -39,6 +39,19 @@ export type GameType = {
   mapInfo: null;
   peak: string[];
   isWin: true;
+  teams?: {
+    teamId: number;
+    players: player[];
+  }[];
+};
+
+type Player = {
+  champion: {
+    imageUrl: string;
+    level: number;
+  };
+  summonerId: string;
+  summonerName: string;
 };
 
 export type MatchesInfoType = {

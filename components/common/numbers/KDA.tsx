@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import Colors, { getKDAColor, getPointColor } from '../../../styles/Colors';
 import RoundCut from '../../../utils/RoundCut';
@@ -29,7 +30,7 @@ const KDA = (props: IProps) => {
   let res;
 
   if (mode === 'Total' || mode === 'Point') {
-    const value = Number(RoundCut((k + a) / d, 2));
+    const value = d !== 0 ? Number(RoundCut((k + a) / d, 2)) : 0;
 
     let color = '';
     if (colored)
@@ -63,4 +64,4 @@ KDA.defaultProps = {
   games: 1,
 };
 
-export default KDA;
+export default memo(KDA);

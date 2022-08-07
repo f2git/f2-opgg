@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import { getWinRateColor } from '../../../styles/Colors';
 
@@ -23,4 +24,4 @@ WinRate.defaultProps = {
   colored: false,
 };
 
-export default WinRate;
+export default memo(WinRate);

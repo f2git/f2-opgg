@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import MostChampList from './MostChampList';
 
 import { FlexHorizontalVertiCalenterStyle, WidgetBoxStyle } from '../../styles/GeneralStyle';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { selectMostOption, fetchMostInfoByName } from '../../store/mostSlice';
+import { selectMostOption } from '../../store/mostSlice';
 import { MostOptionType } from '../../types/mostInfo';
 
 const MostChampTabContainer = styled.div<{ selectedTab: number }>`
@@ -17,12 +16,12 @@ const MostChampTabContainer = styled.div<{ selectedTab: number }>`
     .tab {
       ${FlexHorizontalVertiCalenterStyle}
       flex:1;
-      border-bottom: 1px solid ${Colors.widgetBorder};
+      /* border-bottom: 1px solid ${Colors.widgetBorder}; */
       font-size: 12px;
       color: ${Colors.normalGray};
 
       :nth-child(${({ selectedTab }) => selectedTab}) {
-        background-color: ${Colors.background};
+        background-color: ${Colors.widgetBackground};
         border-bottom: none;
         color: ${Colors.almostBlackPlusFewRed};
         font-weight: bold;

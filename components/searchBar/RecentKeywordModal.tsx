@@ -99,7 +99,7 @@ const RecentKeywordModal = ({ onClick }: { onClick: () => void }) => {
             .sort((a: HistoryType, b: HistoryType) => b.time - a.time)
             .map(({ name, isFavorite }: HistoryType, index: number) => (
               <HistoryItemContainer key={name} tab={tab} name={name} isFavorite={isFavorite}>
-                <Link href={name} passHref>
+                <Link href={name} passHref as={`${name}`}>
                   <div className="name" onClick={() => onClick()}>
                     {name}
                   </div>

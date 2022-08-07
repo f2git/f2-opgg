@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SummonerType } from '../types/summoner';
 import { getSummonerBaseInfo } from '../api/summonerAPI';
 
@@ -21,7 +21,11 @@ export const fetchSummonerBaseInfoByName = createAsyncThunk(
 const summonerSlice = createSlice({
   name: 'summoner',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelected(state, action: PayloadAction<SummonerType | null>) {
+      state.selected = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchSummonerBaseInfoByName.fulfilled, (state, action) => {
       state.selected = action.payload;
@@ -29,6 +33,8 @@ const summonerSlice = createSlice({
   },
 });
 
-const { reducer } = summonerSlice;
+const { actions, reducer } = summonerSlice;
+
+export const { setSelected } = actions;
 
 export default reducer;

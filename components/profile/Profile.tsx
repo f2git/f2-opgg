@@ -8,7 +8,9 @@ interface IProps {
 }
 
 const ProfileContainer = styled.div<IProps>`
+  margin-left: 20px;
   .tier-badges-area {
+    margin-left: 7px;
     height: 30px;
     display: flex;
     align-items: flex-end;

@@ -1,23 +1,62 @@
-import styled from 'styled-components';
+import Image from 'next/image';
+import styled, { keyframes, css } from 'styled-components';
 import Colors from '../../styles/Colors';
 import { ChampionType, MostInfoType, MostOptionType, RecentWinRateType } from '../../types/mostInfo';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
 import WinRate from '../common/numbers/WinRate';
 import BarChart from './BarChart';
+import opggLogo from '../../public/images/opgglogo.svg';
 
 const MostChampListContainer = styled.div`
   background-color: ${Colors.background};
+`;
 
+const ListItemFlip = keyframes`
+  50%{
+    transform: rotateX(90deg);     
+  }
+  100%{
+    transform: rotateX(0deg);
+  }
+`;
+
+const ListItemBackFlip = keyframes`
+  0%{
+    transform: rotateX(0);    
+  }
+
+  50%{
+    transform: rotateX(90deg);
+  }
+  
+  100%{
+    transform: rotateX(90deg);
+  }
+`;
+
+const getDelay = (n: number) => `${(n + 1) * 0.05 + 0.1}`;
+
+const MostChampionListItemContainer = styled.div<{ index: number }>`
+  height: 53px;
+  display: flex;
+  flex: 1;
+  position: relative;
   .list-item + .list-item {
-    border-top: 1px solid ${Colors.widgetBorder};
   }
   .list-item {
-    height: 53px;
+    ${(props) =>
+      css`
+        animation: ${ListItemFlip} 0.25s ${getDelay(props.index)}s ease alternate;
+      `}
+
+    animation-fill-mode: forwards;
+    flex: 1;
+    background-color: ${Colors.widgetBackground};
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    border-bottom: 1px solid ${Colors.widgetBorder};
     .column-center {
       display: flex;
       align-items: center;
@@ -67,6 +106,23 @@ const MostChampListContainer = styled.div`
     .recent-winRate {
       color: ${Colors.normalGray};
     }
+  }
+
+  .list-item-back {
+    ${(props) =>
+      css`
+        animation: ${ListItemBackFlip} 0.25s ${getDelay(props.index)}s ease alternate;
+      `}
+    animation-fill-mode: forwards;
+    height: 53px;
+    width: 298px;
+    position: absolute;
+    border-top: 1px solid ${Colors.widgetBorder};
+    opacity: 1;
+    background-color: ${Colors.widget};
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -134,12 +190,17 @@ const MostChampList = ({ mostOption, mostInfo }: IProps) => {
   return (
     <MostChampListContainer>
       {sortedListItem.map((item, index) => {
-        const key = `${index}-${item.id}-${mostOption}`; // API 데이터에 key, id, name 등이 중복된 경우가 있어 부득이 index 사용
+        const key = `${index}-${item.id}-${mostOption}-${item.wins}`; // API 데이터에 key, id, name 등이 중복된 경우가 있어 부득이 index 사용
 
         return (
-          <div className="list-item" key={key}>
-            {checkChamp ? ChampListItem(item as ChampionType) : RecentListItem(item as RecentWinRateType)}
-          </div>
+          <MostChampionListItemContainer index={index} key={key}>
+            <div className="list-item">
+              {checkChamp ? ChampListItem(item as ChampionType) : RecentListItem(item as RecentWinRateType)}
+            </div>
+            <div className="list-item-back">
+              <Image width={50} height={20} src={opggLogo} priority />
+            </div>
+          </MostChampionListItemContainer>
         );
       })}
     </MostChampListContainer>

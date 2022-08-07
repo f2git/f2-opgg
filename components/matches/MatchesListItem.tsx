@@ -1,13 +1,16 @@
+import { memo } from 'react';
+import Image from 'next/image';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
-import { default as GS } from '../../styles/GeneralStyle';
-import { ItemData } from '../../types/item';
-import { GameType } from '../../types/matches';
+import { default as GS, FlexColumn } from '../../styles/GeneralStyle';
+import { ItemData, Items } from '../../types/item';
+import { GameType, Player } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
 import ScoreBadge from './ScoreBadge';
 import TooltipIcon from './TooltipIcon';
+import ItemsInfo from '../../public/data/item.json';
 
 const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   ${GS.FlexRow}
@@ -15,11 +18,11 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   height: 90px;
   .list-contents {
     ${GS.FlexRowVerticalCenter}
-    border: 1px solid #c0aba8;
+    border: 1px solid ${({ isWin }) => (isWin ? '#c0aba8' : '#a1b8cd')};
     border-right: none;
     font-size: 11px;
     color: ${Colors.moreAlmostBlack};
-    > div {
+    > div:not(.summoner-area) {
       ${GS.FlexColumnHorizontalCenter}
       justify-content: space-around;
       padding-top: 10px;
@@ -107,7 +110,30 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
       }
     }
     .summoner-area {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
       width: 170px;
+
+      .team {
+        ${GS.FlexColumn}
+        flex-wrap: wrap;
+        flex: 1;
+        > .player {
+          ${GS.FlexRowVerticalCenter}
+          height: 17px;
+          width: 50%;
+          .name {
+            width: 50px;
+            font-size: 11px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
     }
   }
   .detail-button {
@@ -119,15 +145,10 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
 
 interface IProps {
   gameInfo: GameType;
-  itemsInfo: {
-    id: string;
-    imageUrl: string;
-    data: ItemData;
-  }[];
 }
 
-const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
-  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId } = gameInfo;
+const MatchesListItem = ({ gameInfo }: IProps) => {
+  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
   const badge = stats.general.opScoreBadge;
@@ -181,20 +202,18 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
           <div className="item-ward-build">
             <div className="item-icons">
               {[...Array(6)].map((n, index) => {
-                const item = itemsInfo[index];
-                const itemId = item && item.id;
-                const tooltipId = item ? `${itemId}-${gameId}-${index}` : '';
-
-                const tooltipText = item && {
-                  title: item.data.name,
-                  content: item.data.description,
-                };
+                const imageUrl = gameInfo.items[index]?.imageUrl;
+                const itemId = imageUrl && imageUrl.split('item/')[1].split('.png')[0];
+                const tooltipId = itemId ? `${itemId}-${gameId}-${index}` : '';
+                const ItemsInfoTyped = ItemsInfo as unknown as Items;
+                const item = ItemsInfoTyped.data[itemId];
                 return (
                   <TooltipIcon
                     id={tooltipId}
                     key={`${gameId}-${itemId}-${index}`}
-                    imageUrl={item && item.imageUrl}
-                    tooltipText={tooltipText}
+                    imageUrl={item && imageUrl}
+                    title={item && item.name}
+                    content={item && item.description}
                   />
                 );
               })}
@@ -209,11 +228,23 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
             <span className="name">제어 와드 1</span>
           </div>
         </div>
-        <div className="summoner-area" />
+        <div className="summoner-area">
+          <div className="team">
+            {teams &&
+              teams.map((team) =>
+                team.players.map((player) => (
+                  <div className="player" key={`${player.summonerId}-${team.teamId}`}>
+                    <Image width={16} height={16} src={player.champion.imageUrl} loading="eager" priority />
+                    <div className="name">{player.summonerName}</div>
+                  </div>
+                )),
+              )}
+          </div>
+        </div>
       </div>
       <div className="detail-button" />
     </MatchesListItemContainer>
   );
 };
 
-export default MatchesListItem;
+export default memo(MatchesListItem);

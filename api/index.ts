@@ -1,4 +1,4 @@
-import Axios, { AxiosError } from 'axios';
+import Axios from 'axios';
 
 const mainAxios = Axios.create({
   baseURL: 'https://codingtest.op.gg/api/summoner/',
