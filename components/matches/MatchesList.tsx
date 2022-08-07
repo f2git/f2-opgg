@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../store';
 import MatchesListItem from './MatchesListItem';
 import ItemsInfo from '../../public/data/item.json';
 import { ItemData, Items } from '../../types/item';
+import { getMatchDetail } from '../../api/summonerAPI';
+import { GameType } from '../../types/matches';
 
 const MatchesListContainer = styled.div`
   margin-top: 16px;
@@ -15,14 +17,19 @@ const MatchesListContainer = styled.div`
 
 const MatchesList = () => {
   const { matchesInfo, matchOption } = useAppSelector(({ matchesReducer }) => matchesReducer);
-  const { games } = matchesInfo!;
+  const [games, setGames] = useState<GameType[] | null>(null);
 
-  const filteredGames = games.filter((game) => {
-    if (matchOption === '전체') return true;
-    if (matchOption === '솔로게임' && game.gameType === '솔랭') return true;
-    if (matchOption === '자유랭크' && game.gameType === '자유 5:5 랭크') return true;
-    return false;
-  });
+  useEffect(() => {
+    if (matchesInfo)
+      setGames(
+        matchesInfo.games.filter((game) => {
+          if (matchOption === '전체') return true;
+          if (matchOption === '솔로게임' && game.gameType === '솔랭') return true;
+          if (matchOption === '자유랭크' && game.gameType === '자유 5:5 랭크') return true;
+          return false;
+        }),
+      );
+  }, [matchOption]);
 
   const ItemsInfoTyped = ItemsInfo as unknown as Items;
 
@@ -31,7 +38,7 @@ const MatchesList = () => {
 
   return (
     <MatchesListContainer>
-      {filteredGames.map((game) => {
+      {games?.map((game) => {
         const items = game.items.map((item) => {
           const itemId = item.imageUrl.split('item/')[1].split('.png')[0];
           const nowItemData = ItemsInfoTyped.data[itemId];

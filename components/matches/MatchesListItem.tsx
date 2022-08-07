@@ -1,8 +1,9 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
-import { default as GS } from '../../styles/GeneralStyle';
+import { default as GS, FlexColumn } from '../../styles/GeneralStyle';
 import { ItemData } from '../../types/item';
-import { GameType } from '../../types/matches';
+import { GameType, Player } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
@@ -19,7 +20,7 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
     border-right: none;
     font-size: 11px;
     color: ${Colors.moreAlmostBlack};
-    > div {
+    > div:not(.summoner-area) {
       ${GS.FlexColumnHorizontalCenter}
       justify-content: space-around;
       padding-top: 10px;
@@ -107,7 +108,30 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
       }
     }
     .summoner-area {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
       width: 170px;
+
+      .team {
+        ${GS.FlexColumn}
+        flex-wrap: wrap;
+        flex: 1;
+        > .player {
+          ${GS.FlexRowVerticalCenter}
+          height: 17px;
+          width: 50%;
+          .name {
+            width: 50px;
+            font-size: 11px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
     }
   }
   .detail-button {
@@ -127,7 +151,7 @@ interface IProps {
 }
 
 const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
-  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId } = gameInfo;
+  const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, items, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
   const badge = stats.general.opScoreBadge;
@@ -209,7 +233,21 @@ const MatchesListItem = ({ gameInfo, itemsInfo }: IProps) => {
             <span className="name">제어 와드 1</span>
           </div>
         </div>
-        <div className="summoner-area" />
+        <div className="summoner-area">
+          {/* {teams && (
+            <> */}
+          <div className="team">
+            {teams &&
+              teams.map((team) =>
+                team.players.map((player) => (
+                  <div className="player">
+                    <Image width={16} height={16} src={player.champion.imageUrl} priority />
+                    <div className="name">{player.summonerName}</div>
+                  </div>
+                )),
+              )}
+          </div>
+        </div>
       </div>
       <div className="detail-button" />
     </MatchesListItemContainer>
