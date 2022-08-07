@@ -203,7 +203,7 @@ const MatchesSummary = () => {
           ) : (
             <div className="list-item" key={`noChamp-${index}`}>
               <div className="image-area">
-                <Image src={noChampAvatar} width={34} height={34} />
+                <Image src={noChampAvatar} width={34} height={34} priority />
               </div>
               <div className="description-area">
                 <div className="details">

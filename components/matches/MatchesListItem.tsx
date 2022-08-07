@@ -16,7 +16,7 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   height: 90px;
   .list-contents {
     ${GS.FlexRowVerticalCenter}
-    border: 1px solid #c0aba8;
+    border: 1px solid ${({ isWin }) => (isWin ? '#c0aba8' : '#a1b8cd')};
     border-right: none;
     font-size: 11px;
     color: ${Colors.moreAlmostBlack};
