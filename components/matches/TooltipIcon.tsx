@@ -12,20 +12,29 @@ interface IStyleProps {
 const TooltipContainer = styled.div<IStyleProps>`
   width: ${(props) => props.size};
   height: ${(props) => props.size};
-  border-radius: 3px;
   overflow: hidden;
   position: relative;
-  .test {
-    background-color: red !important;
+  border-radius: 3px;
+  .tooltip-text {
+    font-size: 11px;
+    max-width: 230px;
+  }
+
+  .name {
+    color: cyan;
+  }
+  .gold {
+    color: gold;
   }
 `;
 
 const BlankContainer = styled.div<IStyleProps>`
   background-color: ${Colors.lightGray};
+  border-radius: 3px;
   width: ${(props) => props.size};
   height: ${(props) => props.size};
   background-color: ${Colors.lightGray};
-  opacity: 0.5;
+  opacity: 0.3;
 `;
 
 interface IProps {
@@ -34,10 +43,9 @@ interface IProps {
   size?: string;
   children?: string;
   title?: string;
-  content?: string;
+  tooltipText?: string;
 }
-
-const ToolitpIcon = ({ id, imageUrl, size, title, content }: IProps) => {
+const ToolitpIcon = ({ id, imageUrl, size, tooltipText }: IProps) => {
   const [tooltip, setTooltip] = useState(false);
   const toolTipId = `${id}`;
 
@@ -45,36 +53,32 @@ const ToolitpIcon = ({ id, imageUrl, size, title, content }: IProps) => {
     setTooltip(true);
   }, []);
 
+  if (!imageUrl) return <BlankContainer size={size} />;
+
   return (
-    <TooltipContainer
-      imageUrl={imageUrl}
-      size={size}
-      onMouseEnter={() => {
-        setTooltip(true);
-      }}
-      onMouseOut={() => {
-        setTooltip(false);
-        setTimeout(() => setTooltip(true), 100);
-      }}
-      data-tip=""
-      data-for={toolTipId}
-    >
-      {imageUrl !== '' ? (
-        <Image src={imageUrl!} layout="fill" objectFit="contain" priority />
-      ) : (
-        <BlankContainer size={size} imageUrl={imageUrl} />
+    <TooltipContainer imageUrl={imageUrl} size={size} data-tip="" data-for={toolTipId}>
+      {toolTipId && tooltip && (
+        <div
+          onMouseEnter={() => {
+            setTooltip(true);
+          }}
+          onMouseOut={() => {
+            setTooltip(false);
+            setTimeout(() => setTooltip(true), 100);
+          }}
+          onBlur={() => {
+            setTooltip(false);
+            setTimeout(() => setTooltip(true), 100);
+          }}
+        >
+          <ReactTooltip id={toolTipId} effect="solid" multiline html>
+            {`<div class="tooltip-text">
+            ${tooltipText}
+            </div>`}
+          </ReactTooltip>
+        </div>
       )}
-      {tooltip && (
-        <ReactTooltip id={toolTipId} effect="solid" multiline html>
-          {content &&
-            `<div style="max-width:250px">
-          <div style="color:cyan;padding-bottom:20px">${title}</div>
-          <div></div>
-          ${content}
-          
-          </div>`}
-        </ReactTooltip>
-      )}
+      <Image src={imageUrl} layout="fill" objectFit="contain" priority />
     </TooltipContainer>
   );
 };
@@ -82,10 +86,10 @@ const ToolitpIcon = ({ id, imageUrl, size, title, content }: IProps) => {
 ToolitpIcon.defaultProps = {
   id: '',
   size: '22px',
-  imageUrl: '',
+  imageUrl: null,
   children: null,
   title: null,
-  content: null,
+  tooltipText: null,
 };
 
 export default memo(ToolitpIcon);

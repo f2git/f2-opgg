@@ -8,8 +8,6 @@ import AutocompleteModal from './AutocompleteModal';
 import RecentKeywordModal from './RecentKeywordModal';
 import useOutsideClick from '../../utils/UseOutsideClick';
 import useDebounce from '../../utils/UseDebounce';
-import { useAppDispatch } from '../../store';
-import { setSelected } from '../../store/summonerSlice';
 
 const SearchBarContainer = styled.div<{ modal: boolean }>`
   width: 260px;
@@ -39,9 +37,9 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
     }
   }
   .bottom-modal-area {
-    position: relative;
+    position: absolute;
     margin-top: 4px;
-    width: 100%;
+    width: 260px;
     background-color: white;
     box-shadow: rgb(0 0 0 / 50%) 0px 2px 4px 0px;
     visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
@@ -51,8 +49,6 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
 
 const SearchBar = () => {
   const [debouncedKeyword, keyword, setKeyword] = useDebounce<string>('', 100);
-  const dispatch = useAppDispatch();
-
   const [bottomModal, setBottomModal] = useState(false);
   const componentREf = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -62,7 +58,6 @@ const SearchBar = () => {
   };
 
   const clearSearchBar = () => {
-    dispatch(setSelected(null));
     setKeyword('');
     modalToggle(false);
   };
