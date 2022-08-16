@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import styled, { css, keyframes } from 'styled-components';
 import Colors from '../../styles/Colors';
 import { default as GS } from '../../styles/GeneralStyle';
@@ -149,6 +150,7 @@ const MatchesListItemContainer = styled.div<{ index: number; isWin: boolean }>`
           ${GS.FlexRowVerticalCenter}
           height: 17px;
           width: 50%;
+          cursor: pointer;
           .name {
             width: 50px;
             font-size: 11px;
@@ -180,10 +182,12 @@ const PlayerList = memo(
     return (
       <>
         {players.map((player) => (
-          <div key={`${player.summonerId}-${gameId}`} className="player">
-            <Image width={16} height={16} src={player.champion.imageUrl} priority />
-            <div className="name">{player.summonerName}</div>
-          </div>
+          <Link key={`${player.summonerId}-${gameId}`} href={`/summoners/${player.summonerName}`}>
+            <div className="player">
+              <Image width={16} height={16} src={player.champion.imageUrl} priority />
+              <div className="name">{player.summonerName}</div>
+            </div>
+          </Link>
         ))}
       </>
     );
@@ -227,11 +231,7 @@ const MatchesListItem = ({ gameInfo, itemIndex }: IProps) => {
             <ChampAvatar champKey={championKey} imageUrl={champion.imageUrl} size="46px" />
             <div className="spells">
               {spells.map((spell) => (
-                <TooltipIcon
-                  // id={`${spell.imageUrl}-${gameId}`}
-                  key={`${spell.imageUrl}-${gameId}`}
-                  imageUrl={spell.imageUrl}
-                />
+                <TooltipIcon key={`${spell.imageUrl}-${gameId}`} imageUrl={spell.imageUrl} />
               ))}
               {peak.map((p) => (
                 <TooltipIcon key={`${p}-${gameId}`} imageUrl={p} size="22px" />
