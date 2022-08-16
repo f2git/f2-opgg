@@ -37,13 +37,12 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
     }
   }
   .bottom-modal-area {
-    position: relative;
+    position: absolute;
     margin-top: 4px;
-    width: 100%;
+    width: 260px;
     background-color: white;
     box-shadow: rgb(0 0 0 / 50%) 0px 2px 4px 0px;
     visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
-    z-index: 1;
   }
 `;
 
