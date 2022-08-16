@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../store';
 import TierBadge from './TierBadge';
+import { default as GS } from '../../styles/GeneralStyle';
 
 interface IProps {
   profileUrl: string;
@@ -36,6 +37,18 @@ const ProfileContainer = styled.div<IProps>`
         background-size: contain;
         background-image: url(${(props) => props.borderUrl});
       }
+      .level-box {
+        ${GS.FlexHorizontalVertiCalenterStyle}
+        position: absolute;
+        background-image: url('/images/bg-levelbox.png');
+        bottom: 0;
+        width: 44px;
+        height: 22px;
+        left: 50%;
+        margin-left: -22px;
+        color: gold;
+        font-size: 13px;
+      }
     }
     .name-area {
       margin: 17px;
@@ -56,12 +69,12 @@ const ProfileContainer = styled.div<IProps>`
 
 const Profile = () => {
   const { selected } = useAppSelector(({ summonerReducer }) => summonerReducer);
-  if (!selected) return <ProfileContainer profileUrl="" borderUrl="" />;
+  if (!selected) return <ProfileContainer profileUrl="" borderUrl="" level={0} />;
 
-  const { previousTiers, name, ladderRank } = selected;
+  const { previousTiers, name, ladderRank, profileImageUrl, profileBorderImageUrl, level } = selected;
 
   return (
-    <ProfileContainer profileUrl={selected.profileImageUrl} borderUrl={selected.profileBorderImageUrl}>
+    <ProfileContainer profileUrl={profileImageUrl} borderUrl={profileBorderImageUrl}>
       <div className="tier-badges-area">
         {previousTiers.map((tier) => (
           <TierBadge key={tier.season} {...tier} />
@@ -69,7 +82,9 @@ const Profile = () => {
       </div>
       <div className="profile-image-name-area">
         <div className="profile-image">
-          <div className="border-image" />
+          <div className="border-image">
+            <div className="level-box">{level}</div>
+          </div>
         </div>
         <div className="name-area">
           <div className="name">{name}</div>
