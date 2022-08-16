@@ -221,26 +221,28 @@ const MatchesSummary = () => {
       </div>
       <div className="position-container">
         <div className="title">선호 포지션 (랭크)</div>
-        {positions.map((pos, index) => {
-          return (
-            <div className="list-item" key={pos.position + index}>
-              <div className="image-area">
-                <Image src={`/images/position/${pos.position}.svg`} width={28} height={28} priority />
-              </div>
-              <div className="description-area">
-                <div className="name">{positionDic[pos.position]}</div>
-                <div className="details">
-                  <span className="pick-rate">{Math.floor((pos.games / gameCount) * 100)}%</span>
-                  <span className="spacer"> | </span>
-                  {index === 0 ? `Win Rate ` : '승률'}
-                  <span className="win-rate">
-                    <WinRate wins={pos.wins} losses={pos.losses} />
-                  </span>
+        {[...positions]
+          .sort((a, b) => b.games - a.games)
+          .map((pos, index) => {
+            return (
+              <div className="list-item" key={pos.position + index}>
+                <div className="image-area">
+                  <Image src={`/images/position/${pos.position}.svg`} width={28} height={28} priority />
+                </div>
+                <div className="description-area">
+                  <div className="name">{positionDic[pos.position]}</div>
+                  <div className="details">
+                    <span className="pick-rate">{Math.floor((pos.games / gameCount) * 100)}%</span>
+                    <span className="spacer"> | </span>
+                    {index === 0 ? `Win Rate ` : '승률'}
+                    <span className="win-rate">
+                      <WinRate wins={pos.wins} losses={pos.losses} />
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </MatcheSummaryContainer>
   );
