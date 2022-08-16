@@ -52,7 +52,7 @@ const MostChampionListItemContainer = styled.div<{ index: number }>`
       css`
         animation: ${ListItemFlip} 0.25s ${getDelay(props.index)}s ease alternate;
       `}
-
+    will-change: transform;
     animation-fill-mode: forwards;
     flex: 1;
     background-color: ${Colors.widgetBackground};
@@ -116,6 +116,7 @@ const MostChampionListItemContainer = styled.div<{ index: number }>`
       css`
         animation: ${ListItemBackFlip} 0.25s ${getDelay(props.index)}s ease alternate;
       `}
+    will-change: transform;
     animation-fill-mode: forwards;
     height: 53px;
     width: 298px;

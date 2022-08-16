@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Colors from '../../styles/Colors';
 import { default as GS } from '../../styles/GeneralStyle';
 import { Items } from '../../types/item';
@@ -12,17 +12,42 @@ import ScoreBadge from './ScoreBadge';
 import TooltipIcon from './TooltipIcon';
 import ItemsInfo from '../../public/data/item.json';
 
-const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
+const ListItemFlip = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateX(100px);     
+  }
+  50%{
+    opacity: 1;
+    transform: translateX(10px);     
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0px);     
+  }
+`;
+
+const getDelay = (n: number) => `${n * 0.06}`;
+
+const MatchesListItemContainer = styled.div<{ index: number; isWin: boolean }>`
   ${GS.FlexRow}
   background-color: ${({ isWin }) => (isWin ? '#d6b5b2' : '#b0ceea')};
   height: 90px;
+  opacity: 0;
 
+  ${(props) =>
+    css`
+      animation: ${ListItemFlip} 0.15s ${getDelay(props.index)}s linear;
+    `}
+  will-change: transform,opacity;
+  animation-fill-mode: forwards;
   .list-contents {
     ${GS.FlexRowVerticalCenter}
     border: 1px solid ${({ isWin }) => (isWin ? '#c0aba8' : '#a1b8cd')};
     border-right: none;
     font-size: 11px;
     color: ${Colors.moreAlmostBlack};
+
     > div:not(.summoner-area) {
       ${GS.FlexColumnHorizontalCenter}
       justify-content: space-around;
@@ -173,7 +198,7 @@ interface IProps {
   itemIndex: number;
 }
 
-const MatchesListItem = ({ gameInfo }: IProps) => {
+const MatchesListItem = ({ gameInfo, itemIndex }: IProps) => {
   const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
@@ -188,7 +213,7 @@ const MatchesListItem = ({ gameInfo }: IProps) => {
   if (!test) return null;
 
   return (
-    <MatchesListItemContainer isWin={isWin}>
+    <MatchesListItemContainer index={itemIndex} isWin={isWin}>
       <div className="list-contents">
         <div className="summary-area">
           <div className="type">{gameType}</div>
