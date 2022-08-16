@@ -208,13 +208,13 @@ const MatchesListItem = ({ gameInfo, itemIndex }: IProps) => {
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
   const players: PlayerType[] | undefined = teams && [...teams[0].players, ...teams[1].players];
   const badge = stats.general.opScoreBadge;
-  const [test, setTest] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setTest(true);
+    setLoaded(true);
   }, []);
 
-  if (!test) return null;
+  if (!loaded) return null;
 
   return (
     <MatchesListItemContainer index={itemIndex} isWin={isWin}>

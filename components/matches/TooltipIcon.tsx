@@ -34,7 +34,7 @@ const BlankContainer = styled.div<IStyleProps>`
   width: ${(props) => props.size};
   height: ${(props) => props.size};
   background-color: ${Colors.lightGray};
-  opacity: 0.5;
+  opacity: 0.3;
 `;
 
 interface IProps {

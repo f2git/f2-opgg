@@ -36,7 +36,6 @@ const MatchesList = () => {
         return (
           <MatchesListItem
             key={`GameRecord_${game.summonerId}_${game.createDate}_${index}_${matchOption}`}
-            // key={`GameRecord_${game.summonerId}_${game.createDate}`}
             itemIndex={index}
             gameInfo={game}
           />
