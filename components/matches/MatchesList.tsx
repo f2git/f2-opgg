@@ -15,11 +15,6 @@ const MatchesListContainer = styled.div`
 const MatchesList = () => {
   const { matchesInfo, matchOption } = useAppSelector(({ matchesReducer }) => matchesReducer);
   const [games, setGames] = useState<GameType[] | null>(null);
-  const [show, setShow] = useState<boolean>(false);
-
-  useEffect(() => {
-    setTimeout(() => setShow(true), 350);
-  }, []);
 
   useEffect(() => {
     if (matchesInfo)
@@ -33,13 +28,15 @@ const MatchesList = () => {
       );
   }, [matchesInfo, matchOption]);
 
+  if (!games) return null;
+
   return (
     <MatchesListContainer>
-      {games &&
-        show &&
-        games.map((game) => {
-          return <MatchesListItem key={game.gameId} gameInfo={game} />;
-        })}
+      {games.map((game, index) => {
+        return (
+          <MatchesListItem key={`GameRecord_${game.summonerId}_${game.createDate}`} itemIndex={index} gameInfo={game} />
+        );
+      })}
     </MatchesListContainer>
   );
 };

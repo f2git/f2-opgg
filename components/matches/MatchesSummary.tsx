@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import Image from 'next/image';
 import styled from 'styled-components';
 import { PieChart } from 'react-minimal-pie-chart';
@@ -135,7 +137,10 @@ const MatcheSummaryContainer = styled.div`
 
 const MatchesSummary = () => {
   const { matchesInfo } = useAppSelector(({ matchesReducer }) => matchesReducer);
-  const { summary, champions, games, positions } = matchesInfo!;
+
+  if (!matchesInfo) return <MatcheSummaryContainer />;
+
+  const { summary, champions, games, positions } = matchesInfo;
   const { assists, deaths, kills, losses, wins } = summary;
   const gameCount = wins + losses;
   const winRate = (wins / gameCount) * 100;
@@ -241,4 +246,4 @@ const MatchesSummary = () => {
   );
 };
 
-export default MatchesSummary;
+export default memo(MatchesSummary);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 import MostChampList from './MostChampList';
@@ -59,4 +60,4 @@ const MostChampTab = () => {
   );
 };
 
-export default MostChampTab;
+export default memo(MostChampTab);

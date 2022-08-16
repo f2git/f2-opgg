@@ -13,6 +13,9 @@ const MostChampListContainer = styled.div`
 `;
 
 const ListItemFlip = keyframes`
+  0%{
+    transform: rotateX(90deg);     
+  }
   50%{
     transform: rotateX(90deg);     
   }
@@ -35,7 +38,7 @@ const ListItemBackFlip = keyframes`
   }
 `;
 
-const getDelay = (n: number) => `${(n + 1) * 0.02 + 0.1}`;
+const getDelay = (n: number) => `${(n + 1) * 0.045 + 0.1}`;
 
 const MostChampionListItemContainer = styled.div<{ index: number }>`
   height: 53px;
@@ -128,6 +131,7 @@ const MostChampionListItemContainer = styled.div<{ index: number }>`
 
 const ChampListItem = (props: ChampionType) => {
   const { key, cs, wins, kills, losses, deaths, assists, name, games, imageUrl } = props;
+
   return (
     <>
       <div className="avatar-area">
@@ -181,7 +185,9 @@ interface IProps {
 }
 
 const MostChampList = ({ mostOption, mostInfo }: IProps) => {
-  const { champions, recentWinRate } = mostInfo!;
+  if (!mostInfo) return <MostChampListContainer />;
+
+  const { champions, recentWinRate } = mostInfo;
   const checkChamp = mostOption === '챔피언 승률';
 
   const listItem: ChampionType[] | RecentWinRateType[] = checkChamp ? champions : recentWinRate;
@@ -191,7 +197,6 @@ const MostChampList = ({ mostOption, mostInfo }: IProps) => {
     <MostChampListContainer>
       {sortedListItem.map((item, index) => {
         const key = `${index}-${item.id}-${mostOption}-${item.wins}`; // API 데이터에 key, id, name 등이 중복된 경우가 있어 부득이 index 사용
-
         return (
           <MostChampionListItemContainer index={index} key={key}>
             <div className="list-item">

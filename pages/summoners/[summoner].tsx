@@ -7,7 +7,6 @@ import MatchesTap from '../../components/matches/MatchesTab';
 import MostChampTab from '../../components/most/MostChampTab';
 import Profile from '../../components/profile/Profile';
 import RankCard from '../../components/rank/RankCard';
-
 import { useAppSelector, wrapper } from '../../store';
 import { fetchMatchesInfoByName } from '../../store/matchesSlice';
 import { fetchMostInfoByName } from '../../store/mostSlice';
@@ -47,6 +46,7 @@ const SummonerPageContainer = styled.div`
 const SummonerPage = () => {
   const selectedSummoner = useAppSelector((state) => state.summonerReducer.selected);
   const [history, setHistory] = useLocalStorage('history', []);
+
   useEffect(() => {
     if (selectedSummoner) {
       const newHistory = {
@@ -54,7 +54,7 @@ const SummonerPage = () => {
         time: Date.now(),
         isFavorite: false,
       };
-      if (history.length <= 0) {
+      if (!history || history.length <= 0) {
         setHistory([newHistory]);
       } else {
         setHistory([...history.filter((v: HistoryType) => v.name !== selectedSummoner.name), newHistory]);

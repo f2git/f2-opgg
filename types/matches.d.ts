@@ -1,5 +1,25 @@
 export type MatchOptionType = '전체' | '솔로게임' | '자유랭크';
 
+export type MatchDetails = {
+  gameId: string;
+  teams: {
+    teamId: number;
+    players: {
+      champion: {
+        imageUrl: string;
+        level: number;
+      };
+      summonerId: string;
+      summonerName: string;
+    }[];
+  }[];
+};
+
+export type TeamType = {
+  teamId: number;
+  players: player[];
+};
+
 export type GameType = {
   mmr: number;
   champion: {
@@ -39,13 +59,10 @@ export type GameType = {
   mapInfo: null;
   peak: string[];
   isWin: true;
-  teams?: {
-    teamId: number;
-    players: player[];
-  }[];
+  teams?: TeamType[];
 };
 
-type Player = {
+export type PlayerType = {
   champion: {
     imageUrl: string;
     level: number;

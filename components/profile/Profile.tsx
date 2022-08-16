@@ -55,7 +55,9 @@ const ProfileContainer = styled.div<IProps>`
 `;
 
 const Profile = () => {
-  const selected = useAppSelector(({ summonerReducer }) => summonerReducer.selected)!;
+  const { selected } = useAppSelector(({ summonerReducer }) => summonerReducer);
+  if (!selected) return <ProfileContainer profileUrl="" borderUrl="" />;
+
   const { previousTiers, name, ladderRank } = selected;
 
   return (
