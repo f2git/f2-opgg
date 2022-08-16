@@ -11,6 +11,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>롤 전적 검색 OP.GG</title>
         <meta name="description" content="OP.GG 사전과제 입니다" />
+        <link
+          href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css"
+          rel="stylesheet"
+          type="text/css"
+        />
       </Head>
       <Header />
       <Component {...pageProps} />

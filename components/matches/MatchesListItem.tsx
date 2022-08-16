@@ -1,10 +1,11 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import Image from 'next/image';
-import styled from 'styled-components';
+import Link from 'next/link';
+import styled, { css, keyframes } from 'styled-components';
 import Colors from '../../styles/Colors';
 import { default as GS } from '../../styles/GeneralStyle';
 import { Items } from '../../types/item';
-import { GameType } from '../../types/matches';
+import { GameType, PlayerType } from '../../types/matches';
 import secondToHMS, { timestampToString } from '../../utils/Time';
 import ChampAvatar from '../common/ChampAvatar';
 import KDA from '../common/numbers/KDA';
@@ -12,16 +13,42 @@ import ScoreBadge from './ScoreBadge';
 import TooltipIcon from './TooltipIcon';
 import ItemsInfo from '../../public/data/item.json';
 
-const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
+const ListItemFlip = keyframes`
+  0%{
+    opacity: 0;
+    transform: translateX(100px);     
+  }
+  50%{
+    opacity: 1;
+    transform: translateX(10px);     
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0px);     
+  }
+`;
+
+const getDelay = (n: number) => `${n * 0.06}`;
+
+const MatchesListItemContainer = styled.div<{ index: number; isWin: boolean }>`
   ${GS.FlexRow}
   background-color: ${({ isWin }) => (isWin ? '#d6b5b2' : '#b0ceea')};
   height: 90px;
+  opacity: 0;
+
+  ${(props) =>
+    css`
+      animation: ${ListItemFlip} 0.15s ${getDelay(props.index)}s linear;
+    `}
+  will-change: transform,opacity;
+  animation-fill-mode: forwards;
   .list-contents {
     ${GS.FlexRowVerticalCenter}
     border: 1px solid ${({ isWin }) => (isWin ? '#c0aba8' : '#a1b8cd')};
     border-right: none;
     font-size: 11px;
     color: ${Colors.moreAlmostBlack};
+
     > div:not(.summoner-area) {
       ${GS.FlexColumnHorizontalCenter}
       justify-content: space-around;
@@ -116,13 +143,14 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
       width: 170px;
 
       .team {
-        ${GS.FlexColumn}
+        ${GS.FlexColumnVerticalCenter}
         flex-wrap: wrap;
         flex: 1;
         > .player {
           ${GS.FlexRowVerticalCenter}
           height: 17px;
           width: 50%;
+          cursor: pointer;
           .name {
             width: 50px;
             font-size: 11px;
@@ -143,18 +171,53 @@ const MatchesListItemContainer = styled.div<{ isWin: boolean }>`
   }
 `;
 
-interface IProps {
-  gameInfo: GameType;
+interface IPlayerListProp {
+  gameId: string;
+  players: PlayerType[] | undefined;
 }
 
-const MatchesListItem = ({ gameInfo }: IProps) => {
+const PlayerList = memo(
+  ({ gameId, players }: IPlayerListProp) => {
+    if (!players) return null;
+    return (
+      <>
+        {players.map((player) => (
+          <Link key={`${player.summonerId}-${gameId}`} href={`/summoners/${player.summonerName}`}>
+            <div className="player">
+              <Image width={16} height={16} src={player.champion.imageUrl} priority />
+              <div className="name">{player.summonerName}</div>
+            </div>
+          </Link>
+        ))}
+      </>
+    );
+  },
+  (prevProps, nextProps) => {
+    return prevProps.gameId === nextProps.gameId;
+  },
+);
+
+interface IProps {
+  gameInfo: GameType;
+  itemIndex: number;
+}
+
+const MatchesListItem = ({ gameInfo, itemIndex }: IProps) => {
   const { champion, gameType, isWin, gameLength, createDate, spells, peak, stats, gameId, teams } = gameInfo;
   const { kill, assist, death, cs, csPerMin, contributionForKillRate } = stats.general;
   const championKey = champion.imageUrl.split('champion/')[1].split('.png')[0];
+  const players: PlayerType[] | undefined = teams && [...teams[0].players, ...teams[1].players];
   const badge = stats.general.opScoreBadge;
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  if (!loaded) return null;
 
   return (
-    <MatchesListItemContainer isWin={isWin}>
+    <MatchesListItemContainer index={itemIndex} isWin={isWin}>
       <div className="list-contents">
         <div className="summary-area">
           <div className="type">{gameType}</div>
@@ -168,14 +231,10 @@ const MatchesListItem = ({ gameInfo }: IProps) => {
             <ChampAvatar champKey={championKey} imageUrl={champion.imageUrl} size="46px" />
             <div className="spells">
               {spells.map((spell) => (
-                <TooltipIcon
-                  id={`${spell.imageUrl}-${gameId}`}
-                  key={`${spell.imageUrl}-${gameId}`}
-                  imageUrl={spell.imageUrl}
-                />
+                <TooltipIcon key={`${spell.imageUrl}-${gameId}`} imageUrl={spell.imageUrl} />
               ))}
               {peak.map((p) => (
-                <TooltipIcon id={`${p}-${gameId}`} key={`${p}-${gameId}`} imageUrl={p} size="22px" />
+                <TooltipIcon key={`${p}-${gameId}`} imageUrl={p} size="22px" />
               ))}
             </div>
           </div>
@@ -196,7 +255,7 @@ const MatchesListItem = ({ gameInfo }: IProps) => {
           <div className="cs">
             {cs} ({csPerMin}) CS
           </div>
-          <div className="kill-engagement-rate">킬관여 {contributionForKillRate}%</div>
+          <div className="kill-engagement-rate">킬관여 {contributionForKillRate}</div>
         </div>
         <div className="item-area">
           <div className="item-ward-build">
@@ -207,38 +266,40 @@ const MatchesListItem = ({ gameInfo }: IProps) => {
                 const tooltipId = itemId ? `${itemId}-${gameId}-${index}` : '';
                 const ItemsInfoTyped = ItemsInfo as unknown as Items;
                 const item = ItemsInfoTyped.data[itemId];
+
+                if (!item) return <TooltipIcon key={`${gameId}-${itemId}-${index}`} />;
+
+                const tooltipText = `
+                  <p class="name">${item.name}</p>
+                  <p class="description">${item.description}</p><br/>
+                  <p>
+                    가격: <span class="gold">${item.gold.total} (${item.gold.base})</span>
+                  </p>
+                `;
+
                 return (
                   <TooltipIcon
                     id={tooltipId}
                     key={`${gameId}-${itemId}-${index}`}
                     imageUrl={item && imageUrl}
-                    title={item && item.name}
-                    content={item && item.description}
+                    tooltipText={tooltipText}
                   />
                 );
               })}
             </div>
             <div className="ward-build-icons">
-              <TooltipIcon id="" size="22px" />
-              <TooltipIcon id="" imageUrl={`/images/icon-build-${isWin ? `red` : `blue`}.png`} size="22px" />
+              <TooltipIcon size="22px" />
+              <TooltipIcon imageUrl={`/images/icon-build-${isWin ? `red` : `blue`}.png`} size="22px" />
             </div>
           </div>
           <div className="control">
-            <TooltipIcon id="" imageUrl={`/images/icon-ward-${isWin ? `red` : `blue`}.svg`} size="16px" />
+            <TooltipIcon imageUrl={`/images/icon-ward-${isWin ? `red` : `blue`}.svg`} size="16px" />
             <span className="name">제어 와드 1</span>
           </div>
         </div>
         <div className="summoner-area">
           <div className="team">
-            {teams &&
-              teams.map((team) =>
-                team.players.map((player) => (
-                  <div className="player" key={`${player.summonerId}-${team.teamId}`}>
-                    <Image width={16} height={16} src={player.champion.imageUrl} loading="eager" priority />
-                    <div className="name">{player.summonerName}</div>
-                  </div>
-                )),
-              )}
+            <PlayerList gameId={gameId} players={players} />
           </div>
         </div>
       </div>

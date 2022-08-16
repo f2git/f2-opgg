@@ -65,14 +65,7 @@ const RecentKeywordModal = ({ onClick }: { onClick: () => void }) => {
   const [tab, setTab] = useState(1);
 
   useEffect(() => {
-    // if (historyLocal) {
-    //   const sortedHistory = historyLocal.sort((a: HistoryType, b: HistoryType) => b.time - a.time);
-    //   setHistory(sortedHistory);
-
     setBookMarks(history.filter((v: HistoryType) => v.isFavorite));
-
-    // console.log(history);
-    // }
   }, [history]);
 
   const deleteHistory = (name: string) => {
@@ -97,21 +90,26 @@ const RecentKeywordModal = ({ onClick }: { onClick: () => void }) => {
         <div className="history">
           {history
             .sort((a: HistoryType, b: HistoryType) => b.time - a.time)
-            .map(({ name, isFavorite }: HistoryType, index: number) => (
-              <HistoryItemContainer key={name} tab={tab} name={name} isFavorite={isFavorite}>
-                <Link href={name} passHref as={`${name}`}>
-                  <div className="name" onClick={() => onClick()}>
-                    {name}
-                  </div>
-                </Link>
-                <div className="favorite" onClick={() => favoriteHistory(index)}>
-                  ★
-                </div>
-                <div className="remove" onClick={() => deleteHistory(name)}>
-                  X
-                </div>
-              </HistoryItemContainer>
-            ))}
+            .map(({ name, isFavorite }: HistoryType, index: number) => {
+              if (index < 6)
+                return (
+                  <HistoryItemContainer key={name} tab={tab} name={name} isFavorite={isFavorite}>
+                    <Link href={name} passHref as={`${name}`}>
+                      <div className="name" onClick={() => onClick()}>
+                        {name}
+                      </div>
+                    </Link>
+                    <div className="favorite" onClick={() => favoriteHistory(index)}>
+                      ★
+                    </div>
+                    <div className="remove" onClick={() => deleteHistory(name)}>
+                      X
+                    </div>
+                  </HistoryItemContainer>
+                );
+
+              return null;
+            })}
         </div>
       ) : (
         <div className="noHistory">
