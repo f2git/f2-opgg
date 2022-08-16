@@ -143,7 +143,7 @@ const MatchesListItemContainer = styled.div<{ index: number; isWin: boolean }>`
       width: 170px;
 
       .team {
-        ${GS.FlexColumn}
+        ${GS.FlexColumnVerticalCenter}
         flex-wrap: wrap;
         flex: 1;
         > .player {
