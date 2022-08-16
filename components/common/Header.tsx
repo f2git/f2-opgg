@@ -26,9 +26,6 @@ const HeaderContainer = styled.div<{ scrollbarWidth: string }>`
 
 const Header = () => {
   const { width } = useScrollbarSize();
-
-  console.log('a');
-
   return (
     <HeaderContainer scrollbarWidth={`${width + 1}px`}>
       <div className="contents-area">

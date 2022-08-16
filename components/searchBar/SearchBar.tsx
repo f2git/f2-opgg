@@ -43,6 +43,7 @@ const SearchBarContainer = styled.div<{ modal: boolean }>`
     background-color: white;
     box-shadow: rgb(0 0 0 / 50%) 0px 2px 4px 0px;
     visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+    z-index: 1;
   }
 `;
 
